@@ -4,6 +4,7 @@ using CyberArk.Extensions.Utilties.CPMPluginErrorCodeStandarts;
 using CyberArk.Extensions.Utilties.Logger;
 using CyberArk.Extensions.Utilties.CPMParametersValidation;
 using System;
+using Newtonsoft.Json;
 
 // Change the Template name space
 namespace CPMPluginTemplate
