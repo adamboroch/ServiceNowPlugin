@@ -2,7 +2,7 @@
 
 namespace CPMPluginTemplate.api
 {
-    public class ServiceNowUser
+    public class ServiceNowUserModel
     {
         // 🔹 Root identifier
         [JsonProperty("sys_id")]
