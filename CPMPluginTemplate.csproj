@@ -57,6 +57,7 @@
     <Compile Include="plugin\Prereconcile.cs" />
     <Compile Include="plugin\Reconcile.cs" />
     <Compile Include="plugin\Verify.cs" />
+	<Compile Include="api\ServiceNowUserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

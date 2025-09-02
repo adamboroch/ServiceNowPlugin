@@ -5,7 +5,7 @@ using CyberArk.Extensions.Utilties.Reader;
 using System;
 
 // Change the Template name space
-namespace CPMPluginTemplate
+namespace CPMPluginTemplate.plugin
 {
     public class Reconcile : BaseAction
     {

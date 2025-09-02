@@ -7,7 +7,7 @@ using System;
 using Newtonsoft.Json;
 
 // Change the Template name space
-namespace CPMPluginTemplate
+namespace CPMPluginTemplate.plugin
 {
     /*
      * Base Action class should contain common plug-in functionality and parameters.
