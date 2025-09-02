@@ -50,7 +50,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="plugin\Class1.cs" />
     <Compile Include="plugin\BaseAction.cs" />
     <Compile Include="plugin\Change.cs" />
     <Compile Include="plugin\Logon.cs" />
