@@ -5,6 +5,7 @@ using CyberArk.Extensions.Utilties.Logger;
 using CyberArk.Extensions.Utilties.CPMParametersValidation;
 using System;
 using Newtonsoft.Json;
+using System.Net.Http;
 
 // Change the Template name space
 namespace CPMPluginTemplate.plugin
@@ -15,11 +16,12 @@ namespace CPMPluginTemplate.plugin
      */
     abstract public class BaseAction : AbsAction
     {
-        #region Properties
+        public static readonly string USERNAME = "username";
+        public static readonly string ADDRESS = "address";
 
         internal ParametersManager ParametersAPI { get; private set; }
 
-        #endregion
+        internal HttpClient HttpClient { get; private set; }
 
         #region constructor
         /// <summary>
@@ -28,13 +30,35 @@ namespace CPMPluginTemplate.plugin
         /// Do not change Ctor's definition not create another.
         /// <param name="accountList"></param>
         /// <param name="logger"></param>
-        public BaseAction(List<IAccount> accountList, ILogger logger)
-            : base(accountList, logger)
+        public BaseAction(List<IAccount> accountList, ILogger logger) : base(accountList, logger)
         {
             // Init ParametersManager
             ParametersAPI = new ParametersManager();
+            HttpClient = new HttpClient();
         }
         #endregion
+
+        internal HttpResponseMessage VerifyCreds(string username, string password, string address)
+        {             HttpClient.DefaultRequestHeaders.Clear();
+            var byteArray = System.Text.Encoding.ASCII.GetBytes($"{username}:{password}");
+            HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+            
+            var uriBuilder = new UriBuilder
+            {
+                Scheme = "https",
+                Host = address,
+                Path = "/api/v1/me",
+                Query = "sysparm_limit=1"
+            };
+
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = uriBuilder.Uri
+            };
+
+            return HttpClient.SendAsync(request).Result;
+        }
 
         /// <summary>
         /// Handle the general RC and error message.
@@ -47,6 +71,14 @@ namespace CPMPluginTemplate.plugin
             Logger.WriteLine(string.Format("Received exception: {0}.", ex), LogLevel.ERROR);
             platformOutput.Message = errCodeStandards.ErrorStandardsDict[PluginErrors.STANDARD_DEFUALT_ERROR_CODE_IDX].ErrorMsg;
             return errCodeStandards.ErrorStandardsDict[PluginErrors.STANDARD_DEFUALT_ERROR_CODE_IDX].ErrorRC; 
+        }
+
+        ~BaseAction()
+        {
+            if (HttpClient != null)
+            {
+                HttpClient.Dispose();
+            }
         }
 
     }

@@ -1,19 +1,27 @@
 ﻿using Newtonsoft.Json;
 
 namespace CPMPluginTemplate.api {
-internal class UserResourceModel
+    internal class ServiceNowUserModel
     {
-        // 🔹 Root identifier
         [JsonProperty("sys_id")]
         public string Id { get; set; }
-
-        // 🔹 Grouped properties
         public Meta Meta { get; set; }
         public Personal Personal { get; set; }
         public Contact Contact { get; set; }
         public Organization Organization { get; set; }
         public Security Security { get; set; }
         public Preferences Preferences { get; set; }
+        public ServiceNowUserModel GetUserUpdatedPasswordJsonRequest(string newPassword)
+        {
+            var userJson = JsonConvert.DeserializeObject<ServiceNowUserModel>(JsonConvert.SerializeObject(this));
+            userJson.Security.UserPassword = newPassword;
+            userJson.Meta = null;
+            userJson.Security.PasswordNeedsReset = "false";
+            userJson.Security.LastLogin = null;
+            userJson.Security.LastLoginTime = null;
+
+            return userJson;
+        }
     }
     internal class Meta
     {

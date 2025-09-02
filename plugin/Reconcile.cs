@@ -9,13 +9,6 @@ namespace CPMPluginTemplate.plugin
 {
     public class Reconcile : BaseAction
     {
-        #region Consts
-
-        public static readonly string USERNAME = "username";
-        public static readonly string PORT = "port";
-
-        #endregion
-
         #region constructor
         /// <summary>
         /// Logon Ctor. Do not change anything unless you would like to initialize local class members
@@ -64,14 +57,6 @@ namespace CPMPluginTemplate.plugin
                 // An exception will be thrown if the parameter does not exist in the account.
                 string username = ParametersAPI.GetMandatoryParameter(USERNAME, ReconcileAccount.AccountProp);
 
-                // Example: Fetch optional parmetere - Port.
-                // An optional parameter is a parameter that can be defined in the account or in the platform.
-                // TargetAccount.ExtraInfoProp is a dictionary that provieds access to all the platform parameters of the target account.
-                // An exception will be thrown if the parameter does not exist in neither the account or the platform.
-                string strPort = ParametersAPI.GetOptionalParameter(PORT, TargetAccount.AccountProp, TargetAccount.ExtraInfoProp);
-
-                // Note: To fetch Logon, Reconcile, Master or Usage account properties,
-                // replace the TargetAccount object with the relevant account's object.
 
                 #endregion
 
