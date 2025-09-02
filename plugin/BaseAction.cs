@@ -39,7 +39,8 @@ namespace CPMPluginTemplate.plugin
         #endregion
 
         internal HttpResponseMessage VerifyCreds(string username, string password, string address)
-        {             HttpClient.DefaultRequestHeaders.Clear();
+        {             
+            HttpClient.DefaultRequestHeaders.Clear();
             var byteArray = System.Text.Encoding.ASCII.GetBytes($"{username}:{password}");
             HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
             
@@ -47,7 +48,7 @@ namespace CPMPluginTemplate.plugin
             {
                 Scheme = "https",
                 Host = address,
-                Path = "/api/v1/me",
+                Path = "/api/now/table/sys_user",
                 Query = "sysparm_limit=1"
             };
 
