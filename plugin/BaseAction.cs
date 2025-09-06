@@ -9,6 +9,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using CPMPluginTemplate.api;
+using System.Linq;
 
 // Change the Template namespace
 namespace CPMPluginTemplate.plugin
@@ -84,6 +86,117 @@ namespace CPMPluginTemplate.plugin
             {
                 Logger.WriteLine($"Network error during VerifyCredsAsync: {ex.Message}", LogLevel.ERROR);
                 throw; // let the calling code handle or wrap as needed
+            }
+        }
+
+        internal async Task<ServiceNowResponseModel> GetUserData(string username ,string password, string address, string usersearch)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+                throw new ArgumentException("Username cannot be empty", nameof(username));
+            if (string.IsNullOrWhiteSpace(password))
+                throw new ArgumentException("Password cannot be empty", nameof(password));
+            if (string.IsNullOrWhiteSpace(address))
+                throw new ArgumentException("Address cannot be empty", nameof(address));
+
+            HttpClient.DefaultRequestHeaders.Clear();
+
+            // Basic Auth
+            var byteArray = Encoding.UTF8.GetBytes($"{username}:{password}");
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+            HttpClient.DefaultRequestHeaders.Accept.Clear();
+            HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var uriBuilder = new UriBuilder
+            {
+                Scheme = "https",
+                Host = address,
+                Path = "/api/now/table/sys_user",
+                Query = $"sysparm_limit=10&user_name={Uri.EscapeDataString(usersearch)}"
+            };
+
+            var request = new HttpRequestMessage(HttpMethod.Get, uriBuilder.Uri);   // GET request
+
+            try
+            {
+                var response = await HttpClient.SendAsync(request).ConfigureAwait(false);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Logger.WriteLine($"ServiceNow API returned error {response.StatusCode}: {errorContent}",LogLevel.ERROR);
+                    throw new ApplicationException($"ServiceNow API returned error {response.StatusCode}: {errorContent}");
+                }
+
+                try
+                {
+                    var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    return JsonConvert.DeserializeObject<ServiceNowResponseModel>(content); // create service now response model <ServiceNowResponseModel>- put the json response in the Service Now User model in the format of the list <ServiceNowUserModel>
+                }
+                catch (JsonException jex)
+                {
+                    Logger.WriteLine($"Failed to parse ServiceNow response: {jex.Message}", LogLevel.ERROR);
+                    throw new ApplicationException("Invalid JSON returned by ServiceNow API.", jex);
+                }
+
+            }
+            catch (HttpRequestException ex)
+            {
+                Logger.WriteLine($"Network error during GetUserID: {ex.Message}", LogLevel.ERROR);
+                throw;
+            }
+        }
+
+        internal async Task<HttpResponseMessage> ChangePasswordAsync(string username, string currentPassword, string newPassword, string address, string usersearch)
+        {
+            try
+            {
+                // Step 1: Get user ID
+                var userResponse = await GetUserData(username, currentPassword, address, usersearch);
+                var user = userResponse?.Data?.FirstOrDefault();
+                if (user == null)
+                    throw new ApplicationException("User not found in ServiceNow.");
+
+                // Step 2: Prepare JSON for password change
+                var updatedUser = user.GetUser(newPassword);
+
+                var parsedUser = JsonConvert.SerializeObject(
+                    updatedUser,
+                    Formatting.Indented,
+                    new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore
+                    }
+                );
+
+                // Step 3: Build URI
+                var uriBuilder = new UriBuilder
+                {
+                    Scheme = "https",
+                    Host = address,
+                    Path = $"/api/now/table/sys_user/{user.Id}",
+                    Query = "sysparm_input_display_value=true"
+                };
+
+                // Step 4: Build PUT request
+                var request = new HttpRequestMessage(HttpMethod.Put, uriBuilder.Uri)
+                {
+                    Content = new StringContent(parsedUser, Encoding.UTF8, "application/json")
+                };
+
+                // Basic Auth
+                var byteArray = Encoding.UTF8.GetBytes($"{username}:{currentPassword}");
+                HttpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+                // Send request and return response directly
+                var response = await HttpClient.SendAsync(request).ConfigureAwait(false);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"Error during password change: {ex.Message}", LogLevel.ERROR);
+                throw;
             }
         }
 

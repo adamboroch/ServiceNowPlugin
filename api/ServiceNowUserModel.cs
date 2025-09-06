@@ -11,7 +11,9 @@ namespace CPMPluginTemplate.api {
         public Organization Organization { get; set; }
         public Security Security { get; set; }
         public Preferences Preferences { get; set; }
-        public ServiceNowUserModel GetUserUpdatedPasswordJsonRequest(string newPassword)
+
+        // This method is used to create a new instance of ServiceNowUserModel with an updated password and default values for certain fields during CPM password change. Null values should be ignored during serialization !!!!
+        public ServiceNowUserModel GetUser(string newPassword)
         {
             var userJson = JsonConvert.DeserializeObject<ServiceNowUserModel>(JsonConvert.SerializeObject(this));
             userJson.Security.UserPassword = newPassword;
