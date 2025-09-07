@@ -112,7 +112,7 @@ namespace CPMPluginTemplate.plugin
                 Scheme = "https",
                 Host = address,
                 Path = "/api/now/table/sys_user",
-                Query = $"sysparm_limit=10&user_name={Uri.EscapeDataString(usersearch)}"
+                Query = $"sysparm_limit=10&user_name={usersearch}"
             };
 
             var request = new HttpRequestMessage(HttpMethod.Get, uriBuilder.Uri);   // GET request
@@ -151,11 +151,29 @@ namespace CPMPluginTemplate.plugin
         {
             try
             {
-                // Step 1: Get user ID
+                // Step 1: Get user data by username - get data including ID that will be used in the PUT request
                 var userResponse = await GetUserData(username, currentPassword, address, usersearch);
-                var user = userResponse?.Data?.FirstOrDefault();
+
+                if (userResponse == null)
+                {
+                    throw new ApplicationException("ServiceNow response is null. No data returned.");
+                }
+
+                if (userResponse.Data == null)
+                {
+                    throw new ApplicationException("ServiceNow response.Data is null. Could not deserialize users.");
+                }
+
+                if (!userResponse.Data.Any())
+                {
+                    throw new ApplicationException("ServiceNow response.Data is empty. No users found.");
+                }
+
+                var user = userResponse.Data.FirstOrDefault();
                 if (user == null)
-                    throw new ApplicationException("User not found in ServiceNow.");
+                {
+                    throw new ApplicationException("User object is null after deserialization.");
+                }
 
                 // Step 2: Prepare JSON for password change
                 var updatedUser = user.GetUser(newPassword);
@@ -174,7 +192,7 @@ namespace CPMPluginTemplate.plugin
                 {
                     Scheme = "https",
                     Host = address,
-                    Path = $"/api/now/table/sys_user/{user.Id}",
+                    Path = $"/api/now/table/sys_user/{user.SysId}",
                     Query = "sysparm_input_display_value=true"
                 };
 
