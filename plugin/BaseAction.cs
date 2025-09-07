@@ -39,7 +39,7 @@ namespace CPMPluginTemplate.plugin
         {
             // Init ParametersManager
             ParametersAPI = new ParametersManager();
-            HttpClient = new HttpClient(); // ideally a static/shared HttpClient, but keeping instance per object for simplicity
+            HttpClient = new HttpClient();
         }
         #endregion
 

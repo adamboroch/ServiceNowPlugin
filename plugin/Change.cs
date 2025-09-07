@@ -3,7 +3,6 @@ using CyberArk.Extensions.Plugins.Models;
 using CyberArk.Extensions.Utilties.Logger;
 using CyberArk.Extensions.Utilties.Reader;
 using System;
-using System.Net.Http;
 
 // Change the Template namespace
 namespace CPMPluginTemplate.plugin
