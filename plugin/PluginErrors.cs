@@ -83,7 +83,7 @@ namespace CPMPluginTemplate.plugin
                 [UNKNOWN_ERROR] = "An unknown error has occurred",
                 [HTTP_REQUEST] = "Error performing HTTP request, please refer to the logs for more information",
                 [VERIFY_ERROR] = "Failed to verify credentials, please refer to the logs for more information",
-                [INVALID_CREDENTIALS] = "Invalid username or password",
+                [INVALID_CREDENTIALS] = "Authentication failed: invalid username, password, or token. Please refer to the logs for more information",
                 [INVALID_CREDENTIALS_LOGON] = "Invalid username or password - logon",
                 [INVALID_CREDENTIALS_PRERECON] = "Invalid reconcile username or password",
                 [USERSEARCH_INVALID_RESPONSE] = "Received invalid response on user search, please refer to the logs for more information",
