@@ -71,7 +71,7 @@ namespace CPMPluginTemplate.plugin
             }
             catch (Exception ex)
             {
-                RC = HandleGeneralError(ex, ref platformOutput);
+                RC = HandleError(ex, ref platformOutput);
             }
             finally
             {

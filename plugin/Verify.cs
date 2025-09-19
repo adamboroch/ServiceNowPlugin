@@ -5,14 +5,13 @@ using CyberArk.Extensions.Utilties.Reader;
 using System;
 using System.Net.Http;
 
-// Change the Template namespace
 namespace CPMPluginTemplate.plugin
 {
     public class Verify : BaseAction
     {
-        #region constructor
+        #region Constructor
         /// <summary>
-        /// Logon Ctor. Do not change anything unless you would like to initialize local class members
+        /// Logon constructor
         /// </summary>
         public Verify(List<IAccount> accountList, ILogger logger) : base(accountList, logger) { }
         #endregion
@@ -32,16 +31,13 @@ namespace CPMPluginTemplate.plugin
         {
             Logger.MethodStart();
 
-            int RC = 9999; // default error
+            int RC = PluginErrors.DEFAULT; // default error
 
             try
             {
-                #region Fetch Account Properties (FileCategories)
+                #region Fetch Account Properties
 
-                // Fetch mandatory username
                 string username = ParametersAPI.GetMandatoryParameter(USERNAME, TargetAccount.AccountProp);
-
-                // Fetch mandatory address (target host)
                 string address = ParametersAPI.GetMandatoryParameter(ADDRESS, TargetAccount.AccountProp);
 
                 #endregion
@@ -54,32 +50,53 @@ namespace CPMPluginTemplate.plugin
 
                 #region Logic
 
-                // Call VerifyCredsAsync and block to get result (because run() is sync)
-                HttpResponseMessage response = VerifyCredsAsync(username, targetAccountPassword, address).GetAwaiter().GetResult();
+                HttpResponseMessage response = VerifyCredsAsync(username, targetAccountPassword, address)
+                                                .GetAwaiter().GetResult();
+                string content = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string content = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                     Logger.WriteLine($"VerifyCreds succeeded. Response content: {content}", LogLevel.INFO);
+                    RC = PluginErrors.SUCCESS;
+                    platformOutput.Message = "Verify passed RC = 0";
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    Logger.WriteLine("Authentication failed", LogLevel.WARNING);
+                    Logger.WriteLine($"Full response content: {content}", LogLevel.INFO);
 
-                    // Success RC
-                    RC = 0;
-                    platformOutput.Message = "Verify passed RC = 0"; // optional
+                    throw new CpmException(PluginErrors.INVALID_CREDENTIALS);
                 }
                 else
                 {
-                    string content = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    Logger.WriteLine($"VerifyCreds failed. Status code: {response.StatusCode}, Content: {content}", LogLevel.WARNING);
+                    // Check if response is valid JSON
+                    bool isJson = content.TrimStart().StartsWith("{") || content.TrimStart().StartsWith("[");
+                    if (!isJson)
+                    {
+                        Logger.WriteLine("Received invalid JSON response", LogLevel.WARNING);
+                        Logger.WriteLine($"Full response content: {content}", LogLevel.INFO);
 
-                    RC = 8600; // example error code
-                    platformOutput.Message = $"Verification failed. Status code: {response.StatusCode}";
+                        throw new CpmException(PluginErrors.INVALID_JSON_RESPONSE);
+                    }
+
+                    Logger.WriteLine($"VerifyCreds failed. Status code: {response.StatusCode}", LogLevel.WARNING);
+                    Logger.WriteLine($"Full response content: {content}", LogLevel.INFO);
+
+                    throw new CpmException(PluginErrors.VERIFY_ERROR);
                 }
 
-                #endregion Logic
+                #endregion
+            }
+            catch (CpmException ex)
+            {
+                // Already a known plugin exception
+                RC = ex.ErrorCode;
+                platformOutput.Message = ex.Message;
             }
             catch (Exception ex)
             {
-                RC = HandleGeneralError(ex, ref platformOutput);
+                // Catch any other unexpected errors
+                RC = HandleError(ex, ref platformOutput);
             }
             finally
             {

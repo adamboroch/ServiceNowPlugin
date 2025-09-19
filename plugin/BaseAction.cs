@@ -221,13 +221,23 @@ namespace CPMPluginTemplate.plugin
         /// <summary>
         /// Handle the general RC and error message.
         /// </summary>
-        internal int HandleGeneralError(Exception ex, ref PlatformOutput platformOutput)
+        internal int HandleError(Exception ex, ref PlatformOutput platformOutput)
         {
-            var errCodeStandards = new ErrorCodeStandards();
-            Logger.WriteLine($"Received exception: {ex}.", LogLevel.ERROR);
-            platformOutput.Message =
-                errCodeStandards.ErrorStandardsDict[PluginErrors.STANDARD_DEFUALT_ERROR_CODE_IDX].ErrorMsg;
-            return errCodeStandards.ErrorStandardsDict[PluginErrors.STANDARD_DEFUALT_ERROR_CODE_IDX].ErrorRC;
+            Logger.WriteLine($"Received exception: {ex}", LogLevel.ERROR);
+
+            // Jeśli wyjątek jest już typu CpmException, zwracamy jego kod
+            if (ex is CpmException cpmEx)
+            {
+                platformOutput.Message = PluginErrors.PluginErrorMessages.ContainsKey(cpmEx.ErrorCode)
+                    ? PluginErrors.PluginErrorMessages[cpmEx.ErrorCode]
+                    : PluginErrors.PluginErrorMessages[PluginErrors.UNKNOWN_ERROR];
+
+                return cpmEx.ErrorCode;
+            }
+
+            // Inne wyjątki — zwracamy default
+            platformOutput.Message = PluginErrors.PluginErrorMessages[PluginErrors.DEFAULT];
+            return PluginErrors.DEFAULT;
         }
 
         ~BaseAction()
