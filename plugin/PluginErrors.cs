@@ -45,8 +45,8 @@ namespace CPMPluginTemplate.plugin
         public static readonly int DEFAULT = 9999;
         public static readonly int UNKNOWN_ERROR = 1000;
         public static readonly int VERIFY_ERROR = 1002;
-        public static readonly int INVALID_CREDENTIALS = 1003;
-        public static readonly int INVALID_CREDENTIALS_PRERECON = 1005;
+        public static readonly int AUTH_ERROR = 1003;
+        public static readonly int AUTH_ERROR_PRERECON = 1005;
         public static readonly int USERSEARCH_INVALID_RESPONSE = 1006;
         public static readonly int USERSEARCH_NOT_FOUND = 1007;
         public static readonly int LOGON_ERROR = 1008;
@@ -67,8 +67,8 @@ namespace CPMPluginTemplate.plugin
                 [DEFAULT] = "General plugin error, please refer to the logs for more information",
                 [UNKNOWN_ERROR] = "An unknown error has occurred",
                 [VERIFY_ERROR] = "Failed to verify credentials, please refer to the logs for more information",
-                [INVALID_CREDENTIALS] = "Authentication failed: invalid username, password, or token. Please refer to the logs for more information",
-                [INVALID_CREDENTIALS_PRERECON] = "Invalid reconcile username or password",
+                [AUTH_ERROR] = "Authentication failed: invalid username, password, token OR insufficient permissions. Check logs for details.",
+                [AUTH_ERROR_PRERECON] = "Authentication failed: invalid reconcile username, password, token OR insufficient permissions. Check logs for details.",
                 [USERSEARCH_INVALID_RESPONSE] = "Received invalid response on user search, please refer to the logs for more information",
                 [USERSEARCH_NOT_FOUND] = "Cannot find user, please refer to the logs for more information",
                 [LOGON_ERROR] = "Failed to verify credentials before change action, please refer to the logs for more information",

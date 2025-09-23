@@ -44,7 +44,7 @@ namespace CPMPluginTemplate.plugin
                     Logger.WriteLine("Authentication failed", LogLevel.ERROR);
                     Logger.WriteLine($"Full response content: {content}", LogLevel.INFO);
 
-                    throw new CpmException(PluginErrors.INVALID_CREDENTIALS_PRERECON);
+                    throw new CpmException(PluginErrors.AUTH_ERROR_PRERECON);
                 }
                 else
                 {

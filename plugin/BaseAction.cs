@@ -50,13 +50,13 @@ namespace CPMPluginTemplate.plugin
             if (string.IsNullOrWhiteSpace(username))
             {
                 Logger.WriteLine("Username cannot be empty", LogLevel.WARNING);
-                throw new CpmException(PluginErrors.INVALID_CREDENTIALS);
+                throw new CpmException(PluginErrors.AUTH_ERROR);
             }
 
             if (string.IsNullOrWhiteSpace(password))
             {
                 Logger.WriteLine($"Password cannot be empty. Username: {username}, Address: {address}", LogLevel.WARNING);
-                throw new CpmException(PluginErrors.INVALID_CREDENTIALS);
+                throw new CpmException(PluginErrors.AUTH_ERROR);
             }
 
             if (string.IsNullOrWhiteSpace(address))
@@ -110,13 +110,13 @@ namespace CPMPluginTemplate.plugin
             if (string.IsNullOrWhiteSpace(username))
             {
                 Logger.WriteLine("Username cannot be empty", LogLevel.WARNING);
-                throw new CpmException(PluginErrors.INVALID_CREDENTIALS);
+                throw new CpmException(PluginErrors.AUTH_ERROR);
             }
 
             if (string.IsNullOrWhiteSpace(password))
             {
                 Logger.WriteLine($"Password cannot be empty. Username: {username}, Address: {address}", LogLevel.WARNING);
-                throw new CpmException(PluginErrors.INVALID_CREDENTIALS);
+                throw new CpmException(PluginErrors.AUTH_ERROR);
             }
 
             if (string.IsNullOrWhiteSpace(address))
@@ -192,7 +192,7 @@ namespace CPMPluginTemplate.plugin
             if (string.IsNullOrWhiteSpace(newPassword))
             {
                 Logger.WriteLine("New password cannot be empty", LogLevel.WARNING);
-                throw new CpmException(PluginErrors.INVALID_CREDENTIALS);
+                throw new CpmException(PluginErrors.AUTH_ERROR);
             }
             // Step 1: Get user data by username
             var userResponse = await GetUserData(username, currentPassword, address, usersearch);
