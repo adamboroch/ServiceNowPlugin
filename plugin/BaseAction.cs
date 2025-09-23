@@ -105,7 +105,7 @@ namespace CPMPluginTemplate.plugin
             if (string.IsNullOrWhiteSpace(usersearch))
             {
                 Logger.WriteLine("User search value cannot be empty", LogLevel.WARNING);
-                throw new CpmException(PluginErrors.USERSEARCH_NOT_FOUND);
+                throw new CpmException(PluginErrors.USERSEARCH_INVALID_RESPONSE);
             }
             if (string.IsNullOrWhiteSpace(username))
             {
@@ -194,21 +194,27 @@ namespace CPMPluginTemplate.plugin
                 Logger.WriteLine("New password cannot be empty", LogLevel.WARNING);
                 throw new CpmException(PluginErrors.AUTH_ERROR);
             }
+
             // Step 1: Get user data by username
             var userResponse = await GetUserData(username, currentPassword, address, usersearch);
 
+            string content = userResponse != null ? JsonConvert.SerializeObject(userResponse, Formatting.Indented) : "null";
+
             if (userResponse == null || userResponse.Data == null || !userResponse.Data.Any())
             {
-                Logger.WriteLine("No data was returned from the GET API user search operation.", LogLevel.INFO);
+                Logger.WriteLine("GET API returned no users or invalid response.", LogLevel.ERROR);
+                Logger.WriteLine($"Full response content: {content}", LogLevel.INFO);
                 throw new CpmException(PluginErrors.USERSEARCH_INVALID_RESPONSE);
             }
 
             var user = userResponse.Data.FirstOrDefault();
             if (user == null)
             {
-                Logger.WriteLine("User found, but user search data is empty. Returned null.", LogLevel.INFO);
-                throw new CpmException(PluginErrors.USERSEARCH_NOT_FOUND);
+                Logger.WriteLine("User found in list, but user data is empty/null.", LogLevel.ERROR);
+                Logger.WriteLine($"Full response content: {content}", LogLevel.INFO);
+                throw new CpmException(PluginErrors.USERSEARCH_INVALID_RESPONSE);
             }
+
 
             // Step 2: Prepare JSON for password change
             var updatedUser = user.GetUser(newPassword);

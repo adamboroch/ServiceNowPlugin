@@ -46,19 +46,16 @@ namespace CPMPluginTemplate.plugin
         public static readonly int UNKNOWN_ERROR = 1000;
         public static readonly int VERIFY_ERROR = 1002;
         public static readonly int AUTH_ERROR = 1003;
-        public static readonly int AUTH_ERROR_PRERECON = 1005;
-        public static readonly int USERSEARCH_INVALID_RESPONSE = 1006;
-        public static readonly int USERSEARCH_NOT_FOUND = 1007;
-        public static readonly int LOGON_ERROR = 1008;
-        public static readonly int CHANGE_ERROR = 1009;
-        public static readonly int CHANGE_ERROR_HISTORY = 1010; // optional
-        public static readonly int PRERECON_ERROR = 1011;
-        public static readonly int RECON_ERROR = 1012;
-        public static readonly int RECON_ERROR_HISTORY = 1013; // optional
-        public static readonly int INVALID_JSON_RESPONSE = 1014;
-        public static readonly int INVALID_JSON_PARSE = 1015; // for parsing-specific failures
-        public static readonly int NETWORK_UNAVAILABLE = 1019;
-        public static readonly int INVALID_PARAMETER = 1027;
+        public static readonly int AUTH_ERROR_PRERECON = 1004;
+        public static readonly int USERSEARCH_INVALID_RESPONSE = 1005;
+        public static readonly int LOGON_ERROR = 1006;
+        public static readonly int CHANGE_ERROR = 1007;
+        public static readonly int PRERECON_ERROR = 1008;
+        public static readonly int RECON_ERROR = 1009;
+        public static readonly int INVALID_JSON_RESPONSE = 1010;
+        public static readonly int INVALID_JSON_PARSE = 1011; // for parsing-specific failures
+        public static readonly int NETWORK_UNAVAILABLE = 1012;
+        public static readonly int INVALID_PARAMETER = 1013;
 
         public static readonly ReadOnlyDictionary<int, string> PluginErrorMessages =
             new ReadOnlyDictionary<int, string>(new Dictionary<int, string>()
@@ -69,14 +66,11 @@ namespace CPMPluginTemplate.plugin
                 [VERIFY_ERROR] = "Failed to verify credentials, please refer to the logs for more information",
                 [AUTH_ERROR] = "Authentication failed: invalid username, password, token OR insufficient permissions. Check logs for details.",
                 [AUTH_ERROR_PRERECON] = "Authentication failed: invalid reconcile username, password, token OR insufficient permissions. Check logs for details.",
-                [USERSEARCH_INVALID_RESPONSE] = "Received invalid response on user search, please refer to the logs for more information",
-                [USERSEARCH_NOT_FOUND] = "Cannot find user, please refer to the logs for more information",
+                [USERSEARCH_INVALID_RESPONSE] = "GET API returned no users or invalid response. Check logs for details.",
                 [LOGON_ERROR] = "Failed to verify credentials before change action, please refer to the logs for more information",
                 [CHANGE_ERROR] = "Failed to change the password, please refer to the logs for more information",
-                [CHANGE_ERROR_HISTORY] = "Cannot change password - new password is present in password history",
                 [PRERECON_ERROR] = "Failed to verify reconcile account credentials, please refer to the logs for more information",
                 [RECON_ERROR] = "Failed to reconcile the password, please refer to the logs for more information",
-                [RECON_ERROR_HISTORY] = "Cannot reconcile password - new password is present in password history",
                 [INVALID_JSON_RESPONSE] = "Unexpected JSON format in response. Check logs for details.",
                 [INVALID_JSON_PARSE] = "Error parsing JSON response. Check logs for details.",
                 [NETWORK_UNAVAILABLE] = "Network connectivity is unavailable. Check logs for details.",
