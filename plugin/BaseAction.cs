@@ -250,7 +250,6 @@ namespace CPMPluginTemplate.plugin
         {
             Logger.WriteLine($"Received exception: {ex}", LogLevel.ERROR);
 
-            // Jeśli wyjątek jest już typu CpmException, zwracamy jego kod
             if (ex is CpmException cpmEx)
             {
                 platformOutput.Message = PluginErrors.PluginErrorMessages.ContainsKey(cpmEx.ErrorCode)
@@ -260,7 +259,6 @@ namespace CPMPluginTemplate.plugin
                 return cpmEx.ErrorCode;
             }
 
-            // Inne wyjątki — zwracamy default
             platformOutput.Message = PluginErrors.PluginErrorMessages[PluginErrors.DEFAULT];
             return PluginErrors.DEFAULT;
         }

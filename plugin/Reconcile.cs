@@ -36,8 +36,7 @@ namespace CPMPluginTemplate.plugin
                 #endregion
 
                 #region Logic - Call ChangePasswordAsync
-                var response = ChangePasswordAsync(reconUsername, reconcileAccountPassword, targetAccountNewPassword, address, username)
-                               .GetAwaiter().GetResult();
+                var response = ChangePasswordAsync(reconUsername, reconcileAccountPassword, targetAccountNewPassword, address, username).GetAwaiter().GetResult();
 
                 if (response.IsSuccessStatusCode)
                 {
