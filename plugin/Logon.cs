@@ -17,10 +17,10 @@ namespace CPMPluginTemplate.plugin
         override public CPMAction ActionName => CPMAction.logon;
         #endregion
 
-        override public int run(ref PlatformOutput platformOutput)
+        public override int run(ref PlatformOutput platformOutput)
         {
             Logger.MethodStart();
-            int RC = 9999; // default error
+            int RC = PluginErrors.DEFAULT; // default error
 
             try
             {
@@ -34,25 +34,32 @@ namespace CPMPluginTemplate.plugin
                 #endregion
 
                 #region Logic
-                // Call VerifyCredsAsync and block since run() is synchronous
                 HttpResponseMessage response = VerifyCredsAsync(username, targetAccountPassword, address).GetAwaiter().GetResult();
 
-                if (response.IsSuccessStatusCode)
-                {
-                    string content = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    Logger.WriteLine($"Logon succeeded. Response content: {content}", LogLevel.INFO);
+                string content = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
-                    RC = 0;
-                    platformOutput.Message = "Logon passed RC = 0;";
-                }
-                else
+                // Check if response is valid JSON
+                bool isJson = content.TrimStart().StartsWith("{") || content.TrimStart().StartsWith("[");
+                if (!isJson)
                 {
-                    string content = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    Logger.WriteLine($"Logon failed. Status code: {response.StatusCode}, Content: {content}", LogLevel.WARNING);
+                    Logger.WriteLine("Received invalid JSON response", LogLevel.ERROR);
+                    Logger.WriteLine($"Full response content: {content}", LogLevel.INFO);
 
-                    RC = 8600; // example error code
-                    platformOutput.Message = $"Logon failed. Status code: {response.StatusCode}";
+                    throw new CpmException(PluginErrors.INVALID_JSON_RESPONSE);
                 }
+
+                // If response is not successful
+                if (!response.IsSuccessStatusCode)
+                {
+                    Logger.WriteLine($"Logon failed. Status code: {response.StatusCode}", LogLevel.ERROR);
+                    Logger.WriteLine($"Full response content: {content}", LogLevel.INFO);
+
+                    throw new CpmException(PluginErrors.LOGON_ERROR);
+                }
+
+                // Success
+                Logger.WriteLine("Logon succeeded", LogLevel.INFO);
+                RC = PluginErrors.SUCCESS;
                 #endregion
             }
             catch (Exception ex)

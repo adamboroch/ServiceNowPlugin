@@ -4,7 +4,6 @@ using CyberArk.Extensions.Utilties.Logger;
 using CyberArk.Extensions.Utilties.Reader;
 using System;
 
-// Change the Template namespace
 namespace CPMPluginTemplate.plugin
 {
     public class Change : BaseAction
@@ -26,7 +25,7 @@ namespace CPMPluginTemplate.plugin
         override public int run(ref PlatformOutput platformOutput)
         {
             Logger.MethodStart();
-            int RC = 9999; // default error code
+            int RC = PluginErrors.DEFAULT; // default error code
 
             try
             {
@@ -41,20 +40,20 @@ namespace CPMPluginTemplate.plugin
                 #endregion
 
                 #region Logic - Call ChangePasswordAsync
-                var response = ChangePasswordAsync(username,targetAccountPassword,targetAccountNewPassword,address,username).GetAwaiter().GetResult();
+                var response = ChangePasswordAsync(username, targetAccountPassword, targetAccountNewPassword, address, username).GetAwaiter().GetResult();
 
                 if (response.IsSuccessStatusCode)
                 {
-                    RC = 0; // success
-                    Logger.WriteLine("Password change successful.", LogLevel.INFO);
+                    RC = PluginErrors.SUCCESS; // success = no error
+                    Logger.WriteLine("Password changed successfully.", LogLevel.INFO);
                 }
                 else
                 {
                     var errorContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    Logger.WriteLine($"Password change failed. ServiceNow returned {response.StatusCode}: {errorContent}", LogLevel.ERROR);
+                    Logger.WriteLine($"Password change failed with status {response.StatusCode}", LogLevel.ERROR);
+                    Logger.WriteLine($"Password change failed. ServiceNow returned {response.StatusCode}: {errorContent}", LogLevel.INFO);
 
-                    platformOutput.Message = $"Password change failed with status {response.StatusCode}";
-                    RC = 8001;
+                    throw new CpmException(PluginErrors.CHANGE_ERROR);
                 }
                 #endregion
             }

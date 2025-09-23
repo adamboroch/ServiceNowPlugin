@@ -5,7 +5,6 @@ using CyberArk.Extensions.Utilties.Reader;
 using System;
 using System.Net.Http;
 
-// Change the Template namespace
 namespace CPMPluginTemplate.plugin
 {
     public class Prereconcile : BaseAction
@@ -15,58 +14,45 @@ namespace CPMPluginTemplate.plugin
         #endregion 
 
         #region Setter
-        /// <summary>
-        /// Defines the Action name that the class is implementing - PreReconcile
-        /// </summary>
         override public CPMAction ActionName => CPMAction.prereconcilepass;
         #endregion
 
-        /// <summary>
-        /// Plug-in Starting point function.
-        /// </summary>
         override public int run(ref PlatformOutput platformOutput)
         {
             Logger.MethodStart();
-
-            int RC = 9999; // default error
+            int RC = PluginErrors.DEFAULT; // default error
 
             try
             {
                 #region Fetch Account Properties
-
                 string username = ParametersAPI.GetMandatoryParameter(USERNAME, ReconcileAccount.AccountProp);
                 string address = ParametersAPI.GetMandatoryParameter(ADDRESS, ReconcileAccount.AccountProp);
-
-                #endregion
-
-                #region Fetch Reconcile Account Password
-
                 string reconcileAccountPassword = ReconcileAccount.CurrentPassword.convertSecureStringToString();
-
                 #endregion
 
                 #region Logic
-
-                // Call VerifyCredsAsync and block to get result
                 HttpResponseMessage response = VerifyCredsAsync(username, reconcileAccountPassword, address).GetAwaiter().GetResult();
+                string content = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string content = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    Logger.WriteLine($"PreReconcile VerifyCreds succeeded. Response content: {content}", LogLevel.INFO);
+                    Logger.WriteLine("PreReconcile verify succeeded", LogLevel.INFO);
+                    RC = PluginErrors.SUCCESS;
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    Logger.WriteLine("Authentication failed", LogLevel.ERROR);
+                    Logger.WriteLine($"Full response content: {content}", LogLevel.INFO);
 
-                    RC = 0; // success
-                    platformOutput.Message = "PreReconcile verify passed RC = 0";
+                    throw new CpmException(PluginErrors.INVALID_CREDENTIALS_PRERECON);
                 }
                 else
                 {
-                    string content = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    Logger.WriteLine($"PreReconcile VerifyCreds failed. Status code: {response.StatusCode}, Content: {content}", LogLevel.WARNING);
+                    Logger.WriteLine($"PreReconcile verify failed. Status code: {response.StatusCode}", LogLevel.ERROR);
+                    Logger.WriteLine($"Full response content: {content}", LogLevel.INFO);
 
-                    RC = 8600; // example error code
-                    platformOutput.Message = $"PreReconcile verification failed. Status code: {response.StatusCode}";
+                    throw new CpmException(PluginErrors.PRERECON_ERROR);
                 }
-
                 #endregion
             }
             catch (Exception ex)

@@ -3,6 +3,7 @@ using CyberArk.Extensions.Plugins.Models;
 using CyberArk.Extensions.Utilties.Logger;
 using CyberArk.Extensions.Utilties.Reader;
 using System;
+using System.Net.Http;
 
 namespace CPMPluginTemplate.plugin
 {
@@ -19,7 +20,7 @@ namespace CPMPluginTemplate.plugin
         override public int run(ref PlatformOutput platformOutput)
         {
             Logger.MethodStart();
-            int RC = 9999; // default error code
+            int RC = PluginErrors.DEFAULT;
 
             try
             {
@@ -35,20 +36,21 @@ namespace CPMPluginTemplate.plugin
                 #endregion
 
                 #region Logic - Call ChangePasswordAsync
-                var response = ChangePasswordAsync(reconUsername, reconcileAccountPassword,targetAccountNewPassword,address,username).GetAwaiter().GetResult();
+                var response = ChangePasswordAsync(reconUsername, reconcileAccountPassword, targetAccountNewPassword, address, username)
+                               .GetAwaiter().GetResult();
 
                 if (response.IsSuccessStatusCode)
                 {
-                    RC = 0; // success
+                    RC = PluginErrors.SUCCESS;
                     Logger.WriteLine("Reconcile password change successful.", LogLevel.INFO);
                 }
                 else
                 {
-                    var errorContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    Logger.WriteLine($"Reconcile password change failed. ServiceNow returned {response.StatusCode}: {errorContent}", LogLevel.ERROR);
+                    string errorContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    Logger.WriteLine($"Reconcile password change failed. ServiceNow returned {response.StatusCode}", LogLevel.ERROR);
+                    Logger.WriteLine($"Full response content: {errorContent}", LogLevel.INFO);
 
-                    platformOutput.Message = $"Reconcile failed with status {response.StatusCode}";
-                    RC = 8001;
+                    throw new CpmException(PluginErrors.RECON_ERROR);
                 }
                 #endregion
             }

@@ -50,19 +50,17 @@ namespace CPMPluginTemplate.plugin
 
                 #region Logic
 
-                HttpResponseMessage response = VerifyCredsAsync(username, targetAccountPassword, address)
-                                                .GetAwaiter().GetResult();
+                HttpResponseMessage response = VerifyCredsAsync(username, targetAccountPassword, address).GetAwaiter().GetResult();
                 string content = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Logger.WriteLine($"VerifyCreds succeeded. Response content: {content}", LogLevel.INFO);
+                    Logger.WriteLine($"VerifyCreds succeeded.", LogLevel.INFO);
                     RC = PluginErrors.SUCCESS;
-                    platformOutput.Message = "Verify passed RC = 0";
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    Logger.WriteLine("Authentication failed", LogLevel.WARNING);
+                    Logger.WriteLine("Authentication failed", LogLevel.ERROR);
                     Logger.WriteLine($"Full response content: {content}", LogLevel.INFO);
 
                     throw new CpmException(PluginErrors.INVALID_CREDENTIALS);
@@ -73,25 +71,19 @@ namespace CPMPluginTemplate.plugin
                     bool isJson = content.TrimStart().StartsWith("{") || content.TrimStart().StartsWith("[");
                     if (!isJson)
                     {
-                        Logger.WriteLine("Received invalid JSON response", LogLevel.WARNING);
+                        Logger.WriteLine("Received invalid JSON response", LogLevel.ERROR);
                         Logger.WriteLine($"Full response content: {content}", LogLevel.INFO);
 
                         throw new CpmException(PluginErrors.INVALID_JSON_RESPONSE);
                     }
 
-                    Logger.WriteLine($"VerifyCreds failed. Status code: {response.StatusCode}", LogLevel.WARNING);
+                    Logger.WriteLine($"VerifyCreds failed. Status code: {response.StatusCode}", LogLevel.ERROR);
                     Logger.WriteLine($"Full response content: {content}", LogLevel.INFO);
 
                     throw new CpmException(PluginErrors.VERIFY_ERROR);
                 }
 
                 #endregion
-            }
-            catch (CpmException ex)
-            {
-                // Already a known plugin exception
-                RC = ex.ErrorCode;
-                platformOutput.Message = ex.Message;
             }
             catch (Exception ex)
             {

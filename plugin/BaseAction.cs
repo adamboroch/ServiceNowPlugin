@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using CyberArk.Extensions.Plugins.Models;
-using CyberArk.Extensions.Utilties.CPMPluginErrorCodeStandarts;
 using CyberArk.Extensions.Utilties.Logger;
 using CyberArk.Extensions.Utilties.CPMParametersValidation;
 using System;
@@ -49,25 +48,32 @@ namespace CPMPluginTemplate.plugin
         internal async Task<HttpResponseMessage> VerifyCredsAsync(string username, string password, string address)
         {
             if (string.IsNullOrWhiteSpace(username))
-                throw new ArgumentException("Username cannot be empty", nameof(username));
-            if (string.IsNullOrWhiteSpace(password))
-                throw new ArgumentException("Password cannot be empty", nameof(password));
-            if (string.IsNullOrWhiteSpace(address))
-                throw new ArgumentException("Address cannot be empty", nameof(address));
+            {
+                Logger.WriteLine("Username cannot be empty", LogLevel.WARNING);
+                throw new CpmException(PluginErrors.INVALID_CREDENTIALS);
+            }
 
-            // Clear previous headers
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                Logger.WriteLine($"Password cannot be empty. Username: {username}, Address: {address}", LogLevel.WARNING);
+                throw new CpmException(PluginErrors.INVALID_CREDENTIALS);
+            }
+
+            if (string.IsNullOrWhiteSpace(address))
+            {
+                Logger.WriteLine("Address cannot be empty", LogLevel.WARNING);
+                throw new CpmException(PluginErrors.INVALID_PARAMETER);
+            }
+
             HttpClient.DefaultRequestHeaders.Clear();
 
-            // UTF-8 encode username:password and set Basic Auth
             var byteArray = Encoding.UTF8.GetBytes($"{username}:{password}");
             HttpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
-            // Optional: accept JSON
             HttpClient.DefaultRequestHeaders.Accept.Clear();
             HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            // Build URI
             var uriBuilder = new UriBuilder
             {
                 Scheme = "https",
@@ -85,18 +91,39 @@ namespace CPMPluginTemplate.plugin
             catch (HttpRequestException ex)
             {
                 Logger.WriteLine($"Network error during VerifyCredsAsync: {ex.Message}", LogLevel.ERROR);
-                throw; // let the calling code handle or wrap as needed
+                throw new CpmException(PluginErrors.NETWORK_UNAVAILABLE, ex);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLine($"Unexpected error during VerifyCredsAsync: {ex.Message}", LogLevel.ERROR);
+                throw new CpmException(PluginErrors.UNKNOWN_ERROR, ex);
             }
         }
 
-        internal async Task<ServiceNowResponseModel> GetUserData(string username ,string password, string address, string usersearch)
+        internal async Task<ServiceNowResponseModel> GetUserData(string username, string password, string address, string usersearch)
         {
+            if (string.IsNullOrWhiteSpace(usersearch))
+            {
+                Logger.WriteLine("User search value cannot be empty", LogLevel.WARNING);
+                throw new CpmException(PluginErrors.USERSEARCH_NOT_FOUND);
+            }
             if (string.IsNullOrWhiteSpace(username))
-                throw new ArgumentException("Username cannot be empty", nameof(username));
+            {
+                Logger.WriteLine("Username cannot be empty", LogLevel.WARNING);
+                throw new CpmException(PluginErrors.INVALID_CREDENTIALS);
+            }
+
             if (string.IsNullOrWhiteSpace(password))
-                throw new ArgumentException("Password cannot be empty", nameof(password));
+            {
+                Logger.WriteLine($"Password cannot be empty. Username: {username}, Address: {address}", LogLevel.WARNING);
+                throw new CpmException(PluginErrors.INVALID_CREDENTIALS);
+            }
+
             if (string.IsNullOrWhiteSpace(address))
-                throw new ArgumentException("Address cannot be empty", nameof(address));
+            {
+                Logger.WriteLine("Address cannot be empty", LogLevel.WARNING);
+                throw new CpmException(PluginErrors.INVALID_PARAMETER);
+            }
 
             HttpClient.DefaultRequestHeaders.Clear();
 
@@ -115,106 +142,104 @@ namespace CPMPluginTemplate.plugin
                 Query = $"sysparm_limit=10&user_name={usersearch}"
             };
 
-            var request = new HttpRequestMessage(HttpMethod.Get, uriBuilder.Uri);   // GET request
+            var request = new HttpRequestMessage(HttpMethod.Get, uriBuilder.Uri); //GET request
 
+            HttpResponseMessage response;
             try
             {
-                var response = await HttpClient.SendAsync(request).ConfigureAwait(false);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    var errorContent = await response.Content.ReadAsStringAsync();
-                    Logger.WriteLine($"ServiceNow API returned error {response.StatusCode}: {errorContent}",LogLevel.ERROR);
-                    throw new ApplicationException($"ServiceNow API returned error {response.StatusCode}: {errorContent}");
-                }
-
-                try
-                {
-                    var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    return JsonConvert.DeserializeObject<ServiceNowResponseModel>(content); // create service now response model <ServiceNowResponseModel>- put the json response in the Service Now User model in the format of the list <ServiceNowUserModel>
-                }
-                catch (JsonException jex)
-                {
-                    Logger.WriteLine($"Failed to parse ServiceNow response: {jex.Message}", LogLevel.ERROR);
-                    throw new ApplicationException("Invalid JSON returned by ServiceNow API.", jex);
-                }
-
+                response = await HttpClient.SendAsync(request).ConfigureAwait(false);
             }
             catch (HttpRequestException ex)
             {
-                Logger.WriteLine($"Network error during GetUserID: {ex.Message}", LogLevel.ERROR);
-                throw;
+                Logger.WriteLine($"Network error during GET request operation: {ex.Message}", LogLevel.ERROR);
+                throw new CpmException(PluginErrors.NETWORK_UNAVAILABLE, ex);
+            }
+
+            var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            // Check if response is valid JSON
+            bool isJson = content.TrimStart().StartsWith("{") || content.TrimStart().StartsWith("[");
+            if (!isJson)
+            {
+                Logger.WriteLine("Received invalid JSON response from ServiceNow", LogLevel.ERROR);
+                Logger.WriteLine($"Full response content: {content}", LogLevel.INFO);
+                throw new CpmException(PluginErrors.INVALID_JSON_RESPONSE);
+            }
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Logger.WriteLine($"ServiceNow API returned error {response.StatusCode}", LogLevel.ERROR);
+                Logger.WriteLine($"Full response content: {content}", LogLevel.INFO);
+                throw new CpmException(PluginErrors.CHANGE_ERROR);
+            }
+
+            try
+            {
+                // Create ServiceNow response model <ServiceNowResponseModel> - 
+                // put the JSON response in the ServiceNow User model in the format of the list <ServiceNowUserModel>
+                return JsonConvert.DeserializeObject<ServiceNowResponseModel>(content);
+            }
+            catch (JsonException jex)
+            {
+                Logger.WriteLine($"Failed to parse ServiceNow JSON response: {jex.Message}", LogLevel.ERROR);
+                Logger.WriteLine($"Full response content: {content}", LogLevel.INFO);
+                throw new CpmException(PluginErrors.INVALID_JSON_PARSE, jex);
             }
         }
 
         internal async Task<HttpResponseMessage> ChangePasswordAsync(string username, string currentPassword, string newPassword, string address, string usersearch)
         {
+            if (string.IsNullOrWhiteSpace(newPassword))
+            {
+                Logger.WriteLine("New password cannot be empty", LogLevel.WARNING);
+                throw new CpmException(PluginErrors.INVALID_CREDENTIALS);
+            }
+            // Step 1: Get user data by username
+            var userResponse = await GetUserData(username, currentPassword, address, usersearch);
+
+            if (userResponse == null || userResponse.Data == null || !userResponse.Data.Any())
+            {
+                Logger.WriteLine("No data was returned from the GET API user search operation.", LogLevel.INFO);
+                throw new CpmException(PluginErrors.USERSEARCH_INVALID_RESPONSE);
+            }
+
+            var user = userResponse.Data.FirstOrDefault();
+            if (user == null)
+            {
+                Logger.WriteLine("User found, but user search data is empty. Returned null.", LogLevel.INFO);
+                throw new CpmException(PluginErrors.USERSEARCH_NOT_FOUND);
+            }
+
+            // Step 2: Prepare JSON for password change
+            var updatedUser = user.GetUser(newPassword);
+            var parsedUser = JsonConvert.SerializeObject(updatedUser, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+
+            // Step 3: Build PUT request
+            var uriBuilder = new UriBuilder
+            {
+                Scheme = "https",
+                Host = address,
+                Path = $"/api/now/table/sys_user/{user.SysId}",
+                Query = "sysparm_input_display_value=true"
+            };
+
+            var request = new HttpRequestMessage(HttpMethod.Put, uriBuilder.Uri)
+            {
+                Content = new StringContent(parsedUser, Encoding.UTF8, "application/json")
+            };
+
+            // Basic Auth
+            var byteArray = Encoding.UTF8.GetBytes($"{username}:{currentPassword}");
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
             try
             {
-                // Step 1: Get user data by username - get data including ID that will be used in the PUT request
-                var userResponse = await GetUserData(username, currentPassword, address, usersearch);
-
-                if (userResponse == null)
-                {
-                    throw new ApplicationException("ServiceNow response is null. No data returned.");
-                }
-
-                if (userResponse.Data == null)
-                {
-                    throw new ApplicationException("ServiceNow response.Data is null. Could not deserialize users.");
-                }
-
-                if (!userResponse.Data.Any())
-                {
-                    throw new ApplicationException("ServiceNow response.Data is empty. No users found.");
-                }
-
-                var user = userResponse.Data.FirstOrDefault();
-                if (user == null)
-                {
-                    throw new ApplicationException("User object is null after deserialization.");
-                }
-
-                // Step 2: Prepare JSON for password change
-                var updatedUser = user.GetUser(newPassword);
-
-                var parsedUser = JsonConvert.SerializeObject(
-                    updatedUser,
-                    Formatting.Indented,
-                    new JsonSerializerSettings
-                    {
-                        NullValueHandling = NullValueHandling.Ignore
-                    }
-                );
-
-                // Step 3: Build URI
-                var uriBuilder = new UriBuilder
-                {
-                    Scheme = "https",
-                    Host = address,
-                    Path = $"/api/now/table/sys_user/{user.SysId}",
-                    Query = "sysparm_input_display_value=true"
-                };
-
-                // Step 4: Build PUT request
-                var request = new HttpRequestMessage(HttpMethod.Put, uriBuilder.Uri)
-                {
-                    Content = new StringContent(parsedUser, Encoding.UTF8, "application/json")
-                };
-
-                // Basic Auth
-                var byteArray = Encoding.UTF8.GetBytes($"{username}:{currentPassword}");
-                HttpClient.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-
-                // Send request and return response directly
-                var response = await HttpClient.SendAsync(request).ConfigureAwait(false);
-                return response;
+                return await HttpClient.SendAsync(request).ConfigureAwait(false);
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
-                Logger.WriteLine($"Error during password change: {ex.Message}", LogLevel.ERROR);
-                throw;
+                Logger.WriteLine($"Network error during ChangePasswordAsync: {ex.Message}", LogLevel.ERROR);
+                throw new CpmException(PluginErrors.NETWORK_UNAVAILABLE, ex);
             }
         }
 
