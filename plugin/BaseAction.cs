@@ -78,8 +78,7 @@ namespace CPMPluginTemplate.plugin
             {
                 Scheme = "https",
                 Host = address,
-                Path = "/api/now/table/sys_user",
-                Query = "sysparm_limit=1"
+                Path = "/api/now/table/sys_user"//,Query = "sysparm_limit=1"
             };
 
             var request = new HttpRequestMessage(HttpMethod.Get, uriBuilder.Uri);
@@ -139,7 +138,7 @@ namespace CPMPluginTemplate.plugin
                 Scheme = "https",
                 Host = address,
                 Path = "/api/now/table/sys_user",
-                Query = $"sysparm_limit=10&user_name={usersearch}"
+                Query = $"user_name={usersearch}" //Query = $"sysparm_limit=10&user_name={usersearch}"
             };
 
             var request = new HttpRequestMessage(HttpMethod.Get, uriBuilder.Uri); //GET request
@@ -226,7 +225,7 @@ namespace CPMPluginTemplate.plugin
                 Scheme = "https",
                 Host = address,
                 Path = $"/api/now/table/sys_user/{user.SysId}",
-                Query = "sysparm_input_display_value=true"
+                Query = "sysparm_input_display_value=true" //to hide the password
             };
 
             var request = new HttpRequestMessage(HttpMethod.Put, uriBuilder.Uri)
