@@ -46,8 +46,6 @@ C:\Program Files (x86)\CyberArk\Password Manager\bin<place dll files here>
 - **Change** – Changes the password of the target account  
 - **Reconcile** – Uses the reconcile account to reset the target account password
 
-> **Note:** PreReconcile / Pre-check logic is **not implemented** in this plugin.
-
 ---
 
 ## Handled Error Codes
