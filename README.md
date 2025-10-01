@@ -1,1 +1,1 @@
-# CPMPluginTemplate
+# ServiceNowPlugin
