@@ -64,7 +64,7 @@ namespace CPMPluginTemplate.plugin
                 [DEFAULT] = "General plugin error, please refer to the logs for more information",
                 [UNKNOWN_ERROR] = "An unknown error has occurred",
                 [VERIFY_ERROR] = "Failed to verify credentials, please refer to the logs for more information",
-                [AUTH_ERROR] = "Authentication failed: invalid username, password, token OR insufficient permissions. Check logs for details.",
+                [AUTH_ERROR] = "Authentication failed: | Invalid username, password, token | OR | Insufficient permissions | Password needs reset | Locked out.",
                 [AUTH_ERROR_PRERECON] = "Authentication failed: invalid reconcile username, password, token OR insufficient permissions. Check logs for details.",
                 [USERSEARCH_INVALID_RESPONSE] = "GET API returned no users or invalid response. Check logs for details.",
                 [LOGON_ERROR] = "Failed to verify credentials before change action, please refer to the logs for more information",
