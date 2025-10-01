@@ -7,8 +7,8 @@
     <ProjectGuid>{7B36DBC7-6EA8-4B10-B9F8-F93BEEA355F2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CPMPluginTemplate</RootNamespace>
-    <AssemblyName>CPMPluginTemplate</AssemblyName>
+    <RootNamespace>ServiceNowPlugin</RootNamespace>
+    <AssemblyName>ServiceNowPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

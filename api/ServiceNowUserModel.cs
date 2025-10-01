@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace CPMPluginTemplate.api
+namespace ServiceNowPlugin.api
 {
     internal class ServiceNowUserModel
     {

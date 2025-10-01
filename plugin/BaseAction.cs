@@ -8,11 +8,11 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using CPMPluginTemplate.api;
+using ServiceNowPlugin.api;
 using System.Linq;
 
 // Change the Template namespace
-namespace CPMPluginTemplate.plugin
+namespace ServiceNowPlugin.plugin
 {
     /*
      * Base Action class should contain common plug-in functionality and parameters.

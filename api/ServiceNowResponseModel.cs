@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace CPMPluginTemplate.api
+namespace ServiceNowPlugin.api
 {
     internal class ServiceNowResponseModel
     {

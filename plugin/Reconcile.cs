@@ -5,7 +5,7 @@ using CyberArk.Extensions.Utilties.Reader;
 using System;
 using System.Net.Http;
 
-namespace CPMPluginTemplate.plugin
+namespace ServiceNowPlugin.plugin
 {
     public class Reconcile : BaseAction
     {

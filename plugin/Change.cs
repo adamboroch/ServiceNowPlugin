@@ -4,7 +4,7 @@ using CyberArk.Extensions.Utilties.Logger;
 using CyberArk.Extensions.Utilties.Reader;
 using System;
 
-namespace CPMPluginTemplate.plugin
+namespace ServiceNowPlugin.plugin
 {
     public class Change : BaseAction
     {

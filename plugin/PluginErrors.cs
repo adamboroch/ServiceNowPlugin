@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace CPMPluginTemplate.plugin
+namespace ServiceNowPlugin.plugin
 {
     public class CpmException : Exception
     {
