@@ -99,7 +99,7 @@ All errors are handled using the `PluginErrors` class. Each error sets `Platform
      - `CyberArk.Extensions.Utilties.dll`
      - `Newtonsoft.Json.dll` (via NuGet or manually)
 
-3. **Add Source Files**:
+3. **Add Source Files like**:
    - `Change.cs`
    - `Reconcile.cs`
    - `Verify.cs`
