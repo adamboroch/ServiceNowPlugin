@@ -18,31 +18,9 @@ This is a CyberArk CPM API-based plugin for managing ServiceNow account password
 > ```powershell
 > Install-Package Newtonsoft.Json -Version 13.0.3
 > ```  
-> Or manually: create a folder structure in your project like  
+> Or manually download and: create a folder structure in your project like  
 > `packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll`  
 > and add a reference to it.
-
----
-
-## Quick Project Setup in Visual Studio
-
-1. **Create a new project**:  
-   - Type: **Class Library (.NET Framework)**  
-   - Framework: **.NET Framework 4.8**  
-   - Name: e.g., `CPMPluginServiceNow`
-
-2. **Add References**:  
-   - Right-click **References → Add Reference**  
-   - Add:
-     - `CyberArk.Extensions.Plugins.Models.dll`
-     - `CyberArk.Extensions.Utilties.dll`
-     - `Newtonsoft.Json.dll` (via NuGet or manually)
-
-3. **Add Source Files**:
-   - `Change.cs`
-   - `Reconcile.cs`
-   - `Verify.cs`
-   - `PluginErrors.cs`
 
 ---
 
@@ -100,3 +78,27 @@ All errors are handled using the `PluginErrors` class. Each error sets `Platform
 
 - Plugin uses `System.Net.Http` for API calls (built-in in .NET Framework)  
 - Plugin uses `Newtonsoft.Json` for JSON parsing
+
+---
+
+## Quick Project Setup in Visual Studio (optional - for developers)
+
+1. **Create a new project**:  
+   - Type: **Class Library (.NET Framework)**  
+   - Framework: **.NET Framework 4.8**  
+   - Name: e.g., `CPMPluginServiceNow`
+
+2. **Add References**:  
+   - Right-click **References → Add Reference**  
+   - Add:
+     - `CyberArk.Extensions.Plugins.Models.dll`
+     - `CyberArk.Extensions.Utilties.dll`
+     - `Newtonsoft.Json.dll` (via NuGet or manually)
+
+3. **Add Source Files**:
+   - `Change.cs`
+   - `Reconcile.cs`
+   - `Verify.cs`
+   - `PluginErrors.cs`
+
+
