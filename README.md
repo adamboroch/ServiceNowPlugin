@@ -28,8 +28,10 @@ This is a CyberArk CPM API-based plugin for managing ServiceNow account password
 
 1. **Copy DLL to CPM server**  
 C:\Program Files (x86)\CyberArk\Password Manager\bin<place dll files here>
-   Example directory (created by you):  \Plugins\ServiceNowUsers
-2. **Register Plugin in PVWA**:
+
+   **Example directory** (created by you):  *\Plugins\ServiceNowUsers
+   
+3. **Register Plugin in PVWA**:
 - Go to **PVWA → CPM → Platform Management → Add/Update Plugin**  
 - Upload the compiled DLL  
 - Define the platform using this plugin
@@ -81,6 +83,7 @@ All errors are handled using the `PluginErrors` class. Each error sets `Platform
   C:\Users\ **YourUserName** \source\repos\ServiceNowPlugin\bin\ **Relese** \ServiceNowPlugin.dll ( Relese | Debug - depends on what option did you choose during Project compile)
 -  **Copy DLL to CPM plugin folder:**
   C:\Program Files (x86)\CyberArk\Password Manager\bin<your plugin folder> (including Newtonsoft.Json.dll)
+   **Example directory** (created by you):  *\Plugins\ServiceNowUsers
   
 ---
 
