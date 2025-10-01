@@ -199,14 +199,14 @@ namespace CPMPluginTemplate.plugin
 
             string content = userResponse != null ? JsonConvert.SerializeObject(userResponse, Formatting.Indented) : "null";
 
-            if (userResponse == null || userResponse.Data == null || !userResponse.Data.Any())
+            var user = userResponse?.Data?.FirstOrDefault();
+
+            if (user == null)
             {
                 Logger.WriteLine("GET API returned no user after search operation or invalid response.", LogLevel.ERROR);
                 Logger.WriteLine($"Full response content: {content}", LogLevel.INFO);
                 throw new CpmException(PluginErrors.USERSEARCH_INVALID_RESPONSE);
             }
-
-            var user = userResponse.Data.First();
 
             // Step 2: Prepare JSON for password change
             var updatedUser = user.GetUser(newPassword);
