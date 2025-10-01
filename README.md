@@ -81,8 +81,7 @@ All errors are handled using the `PluginErrors` class. Each error sets `Platform
 - **Compilation:** You must compile the project in Visual Studio to produce `ServiceNowPlugin.dll`.
 - **Output DLL path:**
   C:\Users\ **YourUserName** \source\repos\ServiceNowPlugin\bin\ **Relese** \ServiceNowPlugin.dll ( Relese | Debug - depends on what option did you choose during Project compile)
--  **Copy DLL to CPM plugin folder:**
-    C:\Program Files (x86)\CyberArk\Password Manager\bin<your plugin folder> 
+-  **Copy DLL to CPM plugin folder:** C:\Program Files (x86)\CyberArk\Password Manager\bin<your plugin folder> 
 -   **Example directory** (created by you):  *\Plugins\ServiceNowUsers  (including Newtonsoft.Json.dll)
 ---
 
