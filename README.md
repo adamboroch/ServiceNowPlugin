@@ -84,7 +84,7 @@ All errors are handled using the `PluginErrors` class. Each error sets `Platform
 -  **Copy DLL to CPM plugin folder:**
   C:\Program Files (x86)\CyberArk\Password Manager\bin<your plugin folder> (including Newtonsoft.Json.dll)
 
-**Example directory** (created by you):  *\Plugins\ServiceNowUsers
+  **Example directory** (created by you):  *\Plugins\ServiceNowUsers
 
 ---
 
