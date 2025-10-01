@@ -201,19 +201,12 @@ namespace CPMPluginTemplate.plugin
 
             if (userResponse == null || userResponse.Data == null || !userResponse.Data.Any())
             {
-                Logger.WriteLine("GET API returned no users or invalid response.", LogLevel.ERROR);
+                Logger.WriteLine("GET API returned no user after search operation or invalid response.", LogLevel.ERROR);
                 Logger.WriteLine($"Full response content: {content}", LogLevel.INFO);
                 throw new CpmException(PluginErrors.USERSEARCH_INVALID_RESPONSE);
             }
 
-            var user = userResponse.Data.FirstOrDefault();
-            if (user == null)
-            {
-                Logger.WriteLine("User found in list, but user data is empty/null.", LogLevel.ERROR);
-                Logger.WriteLine($"Full response content: {content}", LogLevel.INFO);
-                throw new CpmException(PluginErrors.USERSEARCH_INVALID_RESPONSE);
-            }
-
+            var user = userResponse.Data.First();
 
             // Step 2: Prepare JSON for password change
             var updatedUser = user.GetUser(newPassword);
@@ -225,7 +218,7 @@ namespace CPMPluginTemplate.plugin
                 Scheme = "https",
                 Host = address,
                 Path = $"/api/now/table/sys_user/{user.SysId}",
-                Query = "sysparm_input_display_value=true" //to hide the password
+                Query = "sysparm_input_display_value=true" //to hide the new password in api calls
             };
 
             var request = new HttpRequestMessage(HttpMethod.Put, uriBuilder.Uri)
