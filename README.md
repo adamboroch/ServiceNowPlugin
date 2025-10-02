@@ -99,7 +99,7 @@ When DLLs are downloaded from external sources, Windows marks them as "blocked" 
 - Define or duplicate the platform that will use this plugin  
 - **Recommended:** Duplicate an **Application-type platform** → all values are prefilled, only replace the DLL reference  
 - Go to **Target Account Platform > Automatic Password Management > CPM Plug-in**  
-- Upload the compiled DLL  
+- Point to the compiled DLL  
 
 | Property Name | Value |
 |---------------|-------|
