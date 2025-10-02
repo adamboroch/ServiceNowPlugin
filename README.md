@@ -24,9 +24,11 @@ This is a CyberArk CPM API-based plugin for managing ServiceNow account password
 
 ---
 
-## Deploying to CyberArk CPM
+# Deploying DLL to CyberArk CPM
 
-1. **Copy DLL to CPM server**  
+## 1. Deploy DLL to CPM Server
+
+- Copy the plugin DLL to the CPM server:  
 C:\Program Files (x86)\CyberArk\Password Manager\bin<place dll files here>
 
    **Example directory** (created by you):  *\Plugins\ServiceNowUsers
