@@ -3,6 +3,8 @@
 
 This is a CyberArk CPM API-based plugin for managing ServiceNow accounts passwords using the following operations.
 
+---
+
 ## Supported Operations
 
 - **Verify** – Validates credentials of the target account  
