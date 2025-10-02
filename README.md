@@ -31,13 +31,13 @@ This is a CyberArk CPM API-based plugin for managing ServiceNow accounts passwor
 - **.NET SDK:** 14.6.0.14  
   - [CyberArk .NET SDK on Marketplace](https://community.cyberark.com/marketplace/s/#a3550000000EkA0AAK-a3950000000jjoOAAQ)  
   - Package includes e.g.: `CANetPluginInvoker.exe` – used in the API plugin
-- **CyberArk Password Manager (CPM):** Version 14.6.1 (14.06.01.26)  
+- **CyberArk Password Manager (CPM):** Version 14.6.1 (14.06.01.26)  - currently (02.10.2025) the latest versin on which CPM plugin has been tested and confirmed to be a working solution
+- **Visual Studio:** Any edition that supports .NET Framework 4.8  
+- **Required DLLs:**
   - `CyberArk.Extensions.Plugins.Models.dll` v20.0.7.28  
   - `CyberArk.Extensions.Utilties.dll` v20.0.0.3  
   - Both DLLs are part of the CPM installation and can be found in:  
     `C:\Program Files (x86)\CyberArk\Password Manager\bin`
-- **Visual Studio:** Any edition that supports .NET Framework 4.8  
-- **Required DLLs:**
   - `Newtonsoft.Json.dll` (Version 13.0.4)  
     - Json.NET has different libraries for various .NET Framework versions:  
       - `net45` → for .NET 4.5+  
