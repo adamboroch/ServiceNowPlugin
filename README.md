@@ -181,6 +181,7 @@ CyberArk provides a **certified ServiceNow API plug-in**, separate from DLL depl
    - Name: e.g., `CPMPluginServiceNow`
 
 2. **Add References**:  
+   - Place the dll files according to your project struture 
    - Right-click **References → Add Reference**  
    - Add:
      - `CyberArk.Extensions.Plugins.Models.dll`
