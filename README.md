@@ -38,14 +38,19 @@ This is a CyberArk CPM API-based plugin for managing ServiceNow accounts passwor
     `C:\Program Files (x86)\CyberArk\Password Manager\bin`
 - **Visual Studio:** Any edition that supports .NET Framework 4.8  
 - **Required DLLs:**
-  - `Newtonsoft.Json.dll` (version 13.0.3)
+  - `Newtonsoft.Json.dll` (Version 13.0.4)  
+    - Json.NET has different libraries for various .NET Framework versions:  
+      - `net45` → for .NET 4.5+  
+    - Currently used / copied to CPM: 13.04.30916  
+    - [Release info](https://github.com/JamesNK/Newtonsoft.Json/releases)  
+    - [Download Newtonsoft.Json](https://www.newtonsoft.com/json)
 
 > **Note:** `Newtonsoft.Json.dll` can be installed via NuGet:  
 > ```powershell
-> Install-Package Newtonsoft.Json -Version 13.0.3
+> Install-Package Newtonsoft.Json
 > ```  
 > Or manually download and create a folder structure in your project like:  
-> `packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll`  
+> `packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll`  
 > and add a reference to it.
 
 ---
