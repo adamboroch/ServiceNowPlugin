@@ -159,6 +159,7 @@ All errors are handled using the `PluginErrors` class. Each error sets `Platform
 - Plugin uses `System.Net.Http` for API calls (built-in in .NET Framework)  
 - Plugin uses `Newtonsoft.Json` for JSON parsing
 - **Compilation:** You must compile the project in Visual Studio to produce `ServiceNowPlugin.dll`.
+- After building the project, all required DLL files can be found in the following folder Relese or Debug : CyberArk and Newtonsoft.Json dlls
 - **Output DLL path:**
   C:\Users\ **YourUserName** \source\repos\ServiceNowPlugin\bin\ **Relese** \ServiceNowPlugin.dll ( Relese | Debug - depends on what option did you choose during Project compile)
 -  **Copy DLL to CPM plugin folder:** C:\Program Files (x86)\CyberArk\Password Manager\bin<your plugin folder> 
