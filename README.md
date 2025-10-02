@@ -95,21 +95,20 @@ When DLLs are downloaded from external sources, Windows marks them as "blocked" 
 ---
 
 ## 2. Configure Plug-in in PVWA
-- Go to **PVWA → CPM → Platform Management → Add/Update Plugin**  
-- Upload the compiled DLL  
+
 - Define or duplicate the platform that will use this plugin  
 - **Recommended:** Duplicate an **Application-type platform** → all values are prefilled, only replace the DLL reference  
-
-Set or verify these key properties under **General Properties**:
+- Go to **Target Account Platform > Automatic Password Management > CPM Plug-in**  
+- Upload the compiled DLL  
 
 | Property Name | Value |
 |---------------|-------|
 | **DllName**   | `Plugins\ServiceNowUsers\ServiceNowPlugin.dll` |
+| **ExeName**   | `CANetPluginInvoker.exe` |
 | **XMLFile**   | `Yes` |
-| **ActivationMethod** | `Basic` |
-| *(others)*    | Leave blank unless explicitly required (ScriptName, ScriptEngine, ProtocolValidationEx, etc.) |
 
-⚠️ Note: `DllName` is not relevant for group-type policies.  
+⚠️ Other properties (ScriptName, ScriptEngine, ActivationMethod, ProtocolValidationEx, etc.) can remain as default.  
+⚠️ `DllName` is not relevant for group-type policies.
 
 ---
 
