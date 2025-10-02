@@ -24,7 +24,7 @@ This is a CyberArk CPM API-based plugin for managing ServiceNow account password
 
 ---
 
-# Deploying DLL to CyberArk CPM
+# Deploying plugin to CyberArk CPM
 
 ## 1. Deploy DLL to CPM Server
 
