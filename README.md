@@ -1,7 +1,7 @@
 # ServiceNowPlugin
 ## ServiceNow CPM Plugin
 
-This is a CyberArk CPM API-based plugin for managing ServiceNow account passwords using the following operations.
+This is a CyberArk CPM API-based plugin for managing ServiceNow accounts passwords using the following operations.
 
 ## Supported Operations
 
