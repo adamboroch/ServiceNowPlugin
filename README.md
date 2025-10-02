@@ -108,7 +108,7 @@ When DLLs are downloaded from external sources, Windows marks them as "blocked" 
 | **XMLFile**   | `Yes` |
 
 ⚠️ Other properties (ScriptName, ScriptEngine, ActivationMethod, ProtocolValidationEx, etc.) can remain as default.  
-⚠️ `DllName` is not relevant for group-type policies.
+
 
 ---
 
