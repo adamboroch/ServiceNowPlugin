@@ -31,15 +31,57 @@ C:\Program Files (x86)\CyberArk\Password Manager\bin<place dll files here>
 
    **Example directory** (created by you):  *\Plugins\ServiceNowUsers
    
-3. **Register Plugin in PVWA**:
+- ⚠️ **Important – Unlock the DLL before use**  
+When DLLs are downloaded from external sources, Windows marks them as "blocked" for security reasons.  
+- Right-click the downloaded `ServiceNowPlugin.dll`  
+- Select **Properties**  
+- At the bottom of the **General** tab, check for **Security → "This file came from another computer and might be blocked"**  
+- If the **Unblock** checkbox is visible, tick it and click **Apply → OK**  
+- Only then copy the DLL into the plugin folder.  
+- If you skip this step, the plugin may fail to load or execute in CPM.
+
+- Ensure dependencies are in place:  
+- `CyberArk.Extensions.*` DLLs → must remain in the CPM **bin** folder or GAC  
+- `Newtonsoft.Json.dll` → must be accessible to the plugin (placing it alongside the plugin DLL is fine)  
+
+---
+
+## 2. Configure Plug-in in PVWA
 - Go to **PVWA → CPM → Platform Management → Add/Update Plugin**  
 - Upload the compiled DLL  
-- Define the platform using this plugin
+- Define or duplicate the platform that will use this plugin  
+- **Recommended:** Duplicate an **Application-type platform** → all values are prefilled, only replace the DLL reference  
 
-3. **DLL Locations for Runtime**:
-- `CyberArk.Extensions.*` DLLs should remain in the CPM bin folder or GAC  
-- `Newtonsoft.Json.dll` must be accessible to the plugin (placing it alongside plugin DLL is fine)
+Set or verify these key properties under **General Properties**:
 
+| Property Name | Value |
+|---------------|-------|
+| **DllName**   | `Plugins\ServiceNowUsers\ServiceNowPlugin.dll` |
+| **XMLFile**   | `Yes` |
+| **ActivationMethod** | `Basic` |
+| *(others)*    | Leave blank unless explicitly required (ScriptName, ScriptEngine, ProtocolValidationEx, etc.) |
+
+⚠️ Note: `DllName` is not relevant for group-type policies.  
+
+---
+
+## 3. Save, Deploy & Validate
+1. Save the platform configuration.  
+2. Confirm the plugin DLL exists in the correct path: \Plugins\ServiceNowUsers\ServiceNowPlugin.dll
+3. Ensure the **CPM service account** has read/execute rights on the DLL.  
+4. Restart the **CPM service**.  
+5. Test by running a password change on a target account → verify in logs that the `ServiceNowPlugin.dll` is invoked successfully.  
+
+---
+
+## Troubleshooting
+- If the plugin fails to load:  
+- Verify the DLL was **unblocked** before deployment.  
+- Check the DLL path is correct in platform settings.  
+- Ensure all dependencies (`CyberArk.Extensions.*`, `Newtonsoft.Json.dll`) are present.  
+- Restart CPM after any change to reload the configuration.  
+
+---
 ---
 
 ## Supported Operations
