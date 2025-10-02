@@ -1,7 +1,13 @@
 # ServiceNowPlugin
 ## ServiceNow CPM Plugin
 
-This is a CyberArk CPM API-based plugin for managing ServiceNow account passwords using **Change / Reconcile / Verify** operations.
+This is a CyberArk CPM API-based plugin for managing ServiceNow account passwords using the following operations.
+
+## Supported Operations
+
+- **Verify** – Validates credentials of the target account  
+- **Change** – Changes the password of the target account  
+- **Reconcile** – Uses the reconcile account to reset the target account password
 
 ---
 ## Permissions Note
@@ -93,15 +99,6 @@ Set or verify these key properties under **General Properties**:
 - Check the DLL path is correct in platform settings.  
 - Ensure all dependencies (`CyberArk.Extensions.*`, `Newtonsoft.Json.dll`) are present.  
 - Restart CPM after any change to reload the configuration.  
-
----
----
-
-## Supported Operations
-
-- **Verify** – Validates credentials of the target account  
-- **Change** – Changes the password of the target account  
-- **Reconcile** – Uses the reconcile account to reset the target account password
 
 ---
 
