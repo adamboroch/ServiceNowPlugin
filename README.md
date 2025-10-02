@@ -130,7 +130,8 @@ When DLLs are downloaded from external sources, Windows marks them as "blocked" 
 - Verify the DLL was **unblocked** before deployment.  
 - Check the DLL path is correct in platform settings.  
 - Ensure all dependencies (`CyberArk.Extensions.*`, `Newtonsoft.Json.dll`) are present.  
-- Restart CPM after any change to reload the configuration.  
+- Restart CPM after any change to reload the configuration.
+- Enable Debug mode on the platform level 
 
 ---
 
