@@ -57,8 +57,6 @@ This is a CyberArk CPM API-based plugin for managing ServiceNow accounts passwor
 
 ### CyberArk & ServiceNow Integration (Zurich, Version 38)
 
-### CyberArk & ServiceNow Integration (Zurich, Version 38)
-
 Developed a CyberArk CPM plugin that connects directly to ServiceNow via REST API, enabling automated password verification, password changes, and reconciliation of accounts stored in ServiceNow.  
 This plugin extends CyberArk’s automatic password management to ServiceNow users in a seamless and API-driven way.
 
