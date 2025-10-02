@@ -112,7 +112,7 @@ When DLLs are downloaded from external sources, Windows marks them as "blocked" 
 
 ---
 
-## 3. Save, Deploy & Validate
+## 3. Save & Validate
 1. Save the platform configuration.  
 2. Confirm the plugin DLL exists in the correct path: \Plugins\ServiceNowUsers\ServiceNowPlugin.dll
 3. Ensure the **CPM service account** has read/execute rights on the DLL.  
