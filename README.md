@@ -27,21 +27,29 @@ This is a CyberArk CPM API-based plugin for managing ServiceNow accounts passwor
 ## Prerequisites
 
 - **.NET Framework:** 4.8 (`net48`)  
+  - [Download .NET Framework 4.8](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48)
+- **.NET SDK:** 14.6.0.14  
+  - [CyberArk .NET SDK on Marketplace](https://community.cyberark.com/marketplace/s/#a3550000000EkA0AAK-a3950000000jjoOAAQ)  
+  - Package includes e.g.: `CANetPluginInvoker.exe` – used in the API plugin
+- **CyberArk Password Manager (CPM):** Version 14.6.1 (14.06.01.26)  
+  - `CyberArk.Extensions.Plugins.Models.dll` v20.0.7.28  
+  - `CyberArk.Extensions.Utilties.dll` v20.0.0.3  
+  - Both DLLs are part of the CPM installation and can be found in:  
+    `C:\Program Files (x86)\CyberArk\Password Manager\bin`
 - **Visual Studio:** Any edition that supports .NET Framework 4.8  
 - **Required DLLs:**
-  - `CyberArk.Extensions.Plugins.Models.dll`
-  - `CyberArk.Extensions.Utilties.dll`
   - `Newtonsoft.Json.dll` (version 13.0.3)
 
 > **Note:** `Newtonsoft.Json.dll` can be installed via NuGet:  
 > ```powershell
 > Install-Package Newtonsoft.Json -Version 13.0.3
 > ```  
-> Or manually download and: create a folder structure in your project like  
+> Or manually download and create a folder structure in your project like:  
 > `packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll`  
 > and add a reference to it.
 
 ---
+
 ### CyberArk & ServiceNow Integration (Zurich, Version 38)
 
 Integrated CyberArk Privileged Access Management (PAM) solutions with ServiceNow using REST APIs for automation, account management, and workflow optimization. Developed custom plugins and secure connectors to interact with ServiceNow tables and automate repetitive tasks.
