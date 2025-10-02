@@ -127,6 +127,13 @@ All errors are handled using the `PluginErrors` class. Each error sets `Platform
   C:\Users\ **YourUserName** \source\repos\ServiceNowPlugin\bin\ **Relese** \ServiceNowPlugin.dll ( Relese | Debug - depends on what option did you choose during Project compile)
 -  **Copy DLL to CPM plugin folder:** C:\Program Files (x86)\CyberArk\Password Manager\bin<your plugin folder> 
 -   **Example directory** (created by you):  *\Plugins\ServiceNowUsers  (including Newtonsoft.Json.dll)
+-   ## ServiceNow API Plug-in from CyberArk Marketplace
+CyberArk provides a **certified ServiceNow API plug-in**, separate from DLL deployment.  
+
+- Marketplace link: [ServiceNow via API – CyberArk Marketplace](https://community.cyberark.com/marketplace/s/#a35Ht000000riy0IAA-a39Ht000001kKJ4IAM)  
+- Developed by CyberArk, certified, 469+ downloads.  
+- Uses **REST API logic chains**, different from DLL method.  
+- Supports **Password Change** and **Password Reconciliation**. 
 ---
 
 ## Quick Project Setup in Visual Studio (optional - for developers)
