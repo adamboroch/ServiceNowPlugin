@@ -80,7 +80,7 @@ All -> System Web Services -> REST -> REST API Explorer
 - Copy the plugin DLL to the CPM server:  
 C:\Program Files (x86)\CyberArk\Password Manager\bin<place dll files here>
 
-   **Example directory** (created by you):  *\Plugins\ServiceNowUsers
+   **Example directory** (dedicated plugin path created by you in \bin folder):  *\Plugins\ServiceNowUsers
    
 - ⚠️ **Important – Unlock the DLL before use**  
 When DLLs are downloaded from external sources, Windows marks them as "blocked" for security reasons.  
