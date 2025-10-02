@@ -91,7 +91,7 @@ When DLLs are downloaded from external sources, Windows marks them as "blocked" 
 - Only then copy the DLL into the plugin folder.  
 - If you skip this step, the plugin may fail to load or execute in CPM.
 
-- Ensure dependencies are in place:  
+- Ensure that ALL dependencies are in place:  
 - `CyberArk.Extensions.*` DLLs → must remain in the CPM **bin** folder
 - `Newtonsoft.Json.dll` → must be accessible to the plugin (placing it alongside the plugin DLL is fine)  
 
