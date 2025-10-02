@@ -119,8 +119,9 @@ When DLLs are downloaded from external sources, Windows marks them as "blocked" 
 1. Save the platform configuration.  
 2. Confirm the plugin DLL exists in the correct path: \Plugins\ServiceNowUsers\ServiceNowPlugin.dll
 3. Ensure the **CPM service account** has read/execute rights on the DLL.  
-4. Restart the **CPM service**.  
-5. Test by running a password change on a target account → verify in logs that the `ServiceNowPlugin.dll` is invoked successfully.  
+4. Restart the **CPM service**.
+5. Point onboarded ServiceNow acocunts to the platform including reconcile account if in place. 
+6. Test by running a password change on a target account → verify in logs that the `ServiceNowPlugin.dll` is invoked successfully.  
 
 ---
 
