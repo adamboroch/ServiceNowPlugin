@@ -78,7 +78,8 @@ namespace ServiceNowPlugin.plugin
             {
                 Scheme = "https",
                 Host = address,
-                Path = "/api/now/table/sys_user"//,Query = "sysparm_limit=1"
+                Path = "/api/now/table/sys_user",
+                Query = "sysparm_limit=1" // Can be 1 as this is just to verify credentials used to authenticate to API with any valid REST API call
             };
 
             var request = new HttpRequestMessage(HttpMethod.Get, uriBuilder.Uri);
@@ -138,7 +139,7 @@ namespace ServiceNowPlugin.plugin
                 Scheme = "https",
                 Host = address,
                 Path = "/api/now/table/sys_user",
-                Query = $"user_name={usersearch}" //Query = $"sysparm_limit=10&user_name={usersearch}"
+                Query = $"user_name={usersearch}"
             };
 
             var request = new HttpRequestMessage(HttpMethod.Get, uriBuilder.Uri); //GET request
@@ -218,7 +219,7 @@ namespace ServiceNowPlugin.plugin
                 Scheme = "https",
                 Host = address,
                 Path = $"/api/now/table/sys_user/{user.SysId}",
-                Query = "sysparm_input_display_value=true" //to hide the new password in api calls
+                Query = "sysparm_input_display_value=true" //to hide the new password in get api calls after api updates calls
             };
 
             var request = new HttpRequestMessage(HttpMethod.Put, uriBuilder.Uri)
