@@ -57,16 +57,21 @@ This is a CyberArk CPM API-based plugin for managing ServiceNow accounts passwor
 
 ### CyberArk & ServiceNow Integration (Zurich, Version 38)
 
-Integrated CyberArk Privileged Access Management (PAM) solutions with ServiceNow using REST APIs for automation, account management, and workflow optimization. Developed custom plugins and secure connectors to interact with ServiceNow tables and automate repetitive tasks.
+### CyberArk & ServiceNow Integration (Zurich, Version 38)
 
-General API Documentation: [Inbound REST API – Zurich](https://www.servicenow.com/docs/bundle/zurich-api-reference/page/integrate/inbound-rest/concept/c_RESTAPI.html)
+Developed a CyberArk CPM plugin that connects directly to ServiceNow via REST API, enabling automated password verification, password changes, and reconciliation of accounts stored in ServiceNow.  
+This plugin extends CyberArk’s automatic password management to ServiceNow users in a seamless and API-driven way.
 
-APIs used for plugin development (POST/GET only): [Table API – Zurich](https://www.servicenow.com/docs/bundle/zurich-api-reference/page/integrate/inbound-rest/concept/c_TableAPI.html)
+General API Documentation:  
+https://www.servicenow.com/docs/bundle/zurich-api-reference/page/integrate/inbound-rest/concept/c_RESTAPI.html
+
+APIs used for plugin development (POST/GET):  
+https://www.servicenow.com/docs/bundle/zurich-api-reference/page/integrate/inbound-rest/concept/c_TableAPI.html
 
 Worked with Zurich version 38, ensuring compatibility with latest platform features.
 
-For testing and exploration of REST endpoints, used **REST API Explorer** on your ServiceNow instance:  
-`All -> System Web Services -> REST -> REST API Explorer`
+For testing and exploration of REST endpoints, used REST API Explorer on the ServiceNow instance:  
+All -> System Web Services -> REST -> REST API Explorer
 
 ---
 
