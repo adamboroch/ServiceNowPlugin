@@ -197,3 +197,6 @@ CyberArk provides a **certified ServiceNow API plug-in**, separate from DLL depl
 > **Examples**: Full sample implementation files (`CyberArk.Extensions.Plugin.Template.zip`) can be found here on CyberArk Marketplace:  
 > [CyberArk .NET SDK – Plugin Template](https://community.cyberark.com/marketplace/s/#a3550000000EkA0AAK-a3950000000jjoOAAQ)
 
+> <img width="568" height="433" alt="image" src="https://github.com/user-attachments/assets/1b14a412-dc0c-4435-b716-efbddb5731fe" />
+
+
