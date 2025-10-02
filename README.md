@@ -42,6 +42,20 @@ This is a CyberArk CPM API-based plugin for managing ServiceNow accounts passwor
 > and add a reference to it.
 
 ---
+### CyberArk & ServiceNow Integration (Zurich, Version 38)
+
+Integrated CyberArk Privileged Access Management (PAM) solutions with ServiceNow using REST APIs for automation, account management, and workflow optimization. Developed custom plugins and secure connectors to interact with ServiceNow tables and automate repetitive tasks.
+
+General API Documentation: [Inbound REST API – Zurich](https://www.servicenow.com/docs/bundle/zurich-api-reference/page/integrate/inbound-rest/concept/c_RESTAPI.html)
+
+APIs used for plugin development (POST/GET only): [Table API – Zurich](https://www.servicenow.com/docs/bundle/zurich-api-reference/page/integrate/inbound-rest/concept/c_TableAPI.html)
+
+Worked with Zurich version 38, ensuring compatibility with latest platform features.
+
+For testing and exploration of REST endpoints, used **REST API Explorer** on your ServiceNow instance:  
+`All -> System Web Services -> REST -> REST API Explorer`
+
+---
 
 # Deploying plugin to CyberArk CPM
 
