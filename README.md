@@ -147,7 +147,7 @@ CyberArk provides a **certified ServiceNow API plug-in**, separate from DLL depl
 - Supports **Password Change** and **Password Reconciliation**. 
 ---
 
-## Quick Project Setup in Visual Studio (optional - for developers)
+## Quick Project Setup in Visual Studio - GUIDE to build other plugin from Scratch (optional - for developers)
 
 1. **Create a new project**:  
    - Type: **Class Library (.NET Framework)**  
