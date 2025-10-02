@@ -4,7 +4,18 @@
 This is a CyberArk CPM API-based plugin for managing ServiceNow account passwords using **Change / Reconcile / Verify** operations.
 
 ---
+## Permissions Note
 
+- **Verify / Change:** Any user can perform these operations on their **own account** via the API.
+- **Reconcile:** Requires a **Reconcile account** with sufficient privileges (typically an admin account) to reset other users’ passwords.
+  - Using a non-admin or insufficiently privileged account for Reconcile will cause the plugin to fail with:
+
+    ```
+    Execution error. Authentication failed: invalid reconcile username, password, token OR insufficient permissions. Check logs for details.
+    ```
+    **Error code:** 1004
+    
+---
 ## Prerequisites
 
 - **.NET Framework:** 4.8 (`net48`)  
