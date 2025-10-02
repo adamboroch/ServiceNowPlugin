@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using ServiceNowPlugin.api;
 using System.Linq;
 
-// Change the Template namespace
 namespace ServiceNowPlugin.plugin
 {
     /*
