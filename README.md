@@ -16,7 +16,7 @@ This is a CyberArk CPM API-based plugin for managing ServiceNow accounts passwor
 
 - **Verify / Change:** Any user can perform these operations on their **own account** via the API.
 - **Reconcile:** Requires a **Reconcile account** with sufficient privileges to reset other users’ passwords.
-- **user_admin ** builtin role is enough for that purpose- "Can administer users, groups, locations, and companies"
+- **user_admin** builtin role is enough for that purpose- "Can administer users, groups, locations, and companies"
   - Using a non-admin or insufficiently privileged account for Reconcile will cause the plugin to fail with:
 
     ```
