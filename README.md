@@ -24,8 +24,8 @@ This is a CyberArk CPM API-based plugin for managing ServiceNow accounts passwor
     Execution error. Authentication failed: invalid reconcile username, password, token OR insufficient permissions. Check logs for details.
     ```
     **Error code:** 1004
-    **WARRNING** One exception noticed , for built in admin account connected with **security_admin** elavated role reconcile may not work as intended. (works only as the change process <=> reconcile=admin account)
     
+    **WARRNING** One exception noticed , for built in admin account connected with **security_admin** elavated role reconcile may not work as intended. (works only as the change process <=> reconcile=admin account)
 ---
 ## Prerequisites
 
