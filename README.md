@@ -27,7 +27,7 @@ This is a CyberArk CPM API-based plugin for managing ServiceNow accounts passwor
     ```
     **Error code:** 1004
     
-    **WARRNING** When temporary **security_admin** elavated role has been applied reconcile wont work. To make it work again this role should be removed from the affected accounts after the required usage.
+  **WARRNING** When temporary **security_admin** elavated role has been applied reconcile wont work. To make it work again this role should be removed from the affected accounts after the required usage.
 ---
 ## Prerequisites
 
