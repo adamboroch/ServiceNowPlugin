@@ -15,9 +15,11 @@ This is a CyberArk CPM API-based plugin for managing ServiceNow accounts passwor
 ## Permissions Note
 
 - **Verify / Change:** Any user can perform these operations on their **own account** via the API.
-- **Reconcile:** Requires a **Reconcile account** with sufficient privileges to reset other users’ passwords. For example **user_admin** builtin role - "Can administer users, groups, locations, and companies".
+- **Reconcile:** Requires a **Reconcile account** with sufficient privileges to reset other users’ passwords. Builtin role called **admin**.
 - There is not any security concers in case using admin privileges for reconcile account (to which end users dose not have access to).
-- In case there is a need to create dedicated role for that purpose Service Now admins should take a look on that. To allow API GET/PUT operations for all /api/now/table/sys_user/ table records.
+- In case there is a need to create dedicated role for that purpose Service Now admins should take a look on that:
+    - To allow API GET/PUT operations for all /api/now/table/sys_user/ table records.
+    - "Set Password" button should be visable for that service account for all accounts that password should be changed.
   - Using a non-admin or insufficiently privileged account for Reconcile will cause the plugin to fail with:
 
     ```
@@ -25,7 +27,7 @@ This is a CyberArk CPM API-based plugin for managing ServiceNow accounts passwor
     ```
     **Error code:** 1004
     
-    **WARRNING** One exception noticed , for built in admin account connected with **security_admin** elavated role reconcile may not work as intended. (works only as the change process <=> reconcile=admin account)
+    **WARRNING** When temporary **security_admin** elavated role has been applied reconcile wont work. To make it work again this role should be removed from the affected accounts after the required usage.
 ---
 ## Prerequisites
 
