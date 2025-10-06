@@ -153,17 +153,19 @@ All errors are handled using the `PluginErrors` class. Each error sets `Platform
 | 9999  | General plugin error, please refer to the logs for more information |
 | 1000  | An unknown error has occurred |
 | 1002  | Failed to verify credentials, please refer to the logs for more information |
-| 1003  | Authentication failed: Invalid username, password, token OR Insufficient permissions OR Password needs reset OR Locked out. |
+| 1003  | Authentication failed: | Invalid username, password, token | OR | Insufficient permissions | Password needs reset | Locked out. |
 | 1004  | Authentication failed: invalid reconcile username, password, token OR insufficient permissions. Check logs for details. |
 | 1005  | GET API returned no users or invalid response. Check logs for details. |
 | 1006  | Failed to verify credentials before change action, please refer to the logs for more information |
 | 1007  | Failed to change the password, please refer to the logs for more information |
-| 1008  | Failed to verify reconcile account credentials, please refer to the logs for more information |
-| 1009  | Failed to reconcile the password, please refer to the logs for more information |
-| 1010  | Unexpected JSON format in response. Check logs for details. |
-| 1011  | Error parsing JSON response. Check logs for details. |
-| 1012  | Network connectivity is unavailable. Check logs for details. |
-| 1013  | Invalid parameter value passed to plugin. Check logs for details. |
+| 1008  | Failed to change the password | Insufficient permissions | Please refer to the logs for more information |
+| 1009  | Failed to verify reconcile account credentials, please refer to the logs for more information |
+| 1010  | Failed to reconcile the password, please refer to the logs for more information |
+| 1011  | Failed to reconcile the password | Insufficient permissions | Please refer to the logs for more information |
+| 1012  | Unexpected JSON format in response. Check logs for details. |
+| 1013  | Error parsing JSON response. Check logs for details. |
+| 1014  | Network connectivity is unavailable. Check logs for details. |
+| 1015  | Invalid parameter value passed to plugin. Check logs for details. |
 
 ---
 
