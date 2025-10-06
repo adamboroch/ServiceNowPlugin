@@ -24,8 +24,9 @@ This is a CyberArk CPM API-based plugin for managing ServiceNow accounts passwor
 - In case there is a need to create dedicated role for that purpose Service Now admins should take a look on that:
     - To allow API GET/PUT operations for all /api/now/table/sys_user/ table records.
     - "Set Password" button should be visable for that service account for all accounts that password should be changed.
- 
-- Using a non-admin or insufficiently privileged account for Reconcile may cause the plugin to fail even if the HTTP response status is 200. Examples:
+
+
+- Using a non-admin or insufficiently privileged account for Reconcile\ Change operations may cause the plugin to fail even if the HTTP response status is 200. Examples:
 
     **Case 1: Insufficient permissions (e.g., user_admin role)**
     ```
