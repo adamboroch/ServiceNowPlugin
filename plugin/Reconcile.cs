@@ -40,14 +40,25 @@ namespace ServiceNowPlugin.plugin
 
                 if (response.IsSuccessStatusCode)
                 {
+                    var content = response.Content.ReadAsStringAsync().Result;
+                    if (!content.Contains("user_password"))
+                    {
+                        Logger.WriteLine("WARNING: Password reconcile request returned 200 but no user_password field — change not applied.", LogLevel.WARNING);
+                        Logger.WriteLine($"ServiceNow ignored the update to the 'user_password' field because the user does not have write access to this field in the 'sys_user' table. RESPONSE: {content}", LogLevel.ERROR);
+
+                        throw new CpmException(PluginErrors.RECON_ERROR_PERM);
+                    }
+
                     RC = PluginErrors.SUCCESS;
                     Logger.WriteLine("Reconcile password change successful.", LogLevel.INFO);
+
                 }
                 else
                 {
                     string errorContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                     Logger.WriteLine($"Reconcile password change failed. ServiceNow returned {response.StatusCode}", LogLevel.ERROR);
                     Logger.WriteLine($"Full response content: {errorContent}", LogLevel.INFO);
+                    Logger.WriteLine("Check reconcile account permissions", LogLevel.INFO);
 
                     throw new CpmException(PluginErrors.RECON_ERROR);
                 }

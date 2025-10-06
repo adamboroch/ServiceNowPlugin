@@ -44,6 +44,14 @@ namespace ServiceNowPlugin.plugin
 
                 if (response.IsSuccessStatusCode)
                 {
+                    var content = response.Content.ReadAsStringAsync().Result;
+                    if (!content.Contains("user_password"))
+                    {
+                        Logger.WriteLine("WARNING: Password change request returned 200 but no user_password field — change not applied.", LogLevel.WARNING);
+                        Logger.WriteLine($"ServiceNow ignored the update to the 'user_password' field because the user does not have write access to this field in the 'sys_user' table. RESPONSE: {content}", LogLevel.ERROR);
+    
+                        throw new CpmException(PluginErrors.CHANGE_ERROR_PERM);
+                    }
                     RC = PluginErrors.SUCCESS; // success = no error
                     Logger.WriteLine("Password changed successfully.", LogLevel.INFO);
                 }
@@ -52,7 +60,7 @@ namespace ServiceNowPlugin.plugin
                     var errorContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                     Logger.WriteLine($"Password change failed with status {response.StatusCode}", LogLevel.ERROR);
                     Logger.WriteLine($"Password change failed. ServiceNow returned {response.StatusCode}: {errorContent}", LogLevel.INFO);
-
+                    Logger.WriteLine("Check account permissions", LogLevel.INFO);
                     throw new CpmException(PluginErrors.CHANGE_ERROR);
                 }
                 #endregion

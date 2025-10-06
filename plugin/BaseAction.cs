@@ -218,7 +218,7 @@ namespace ServiceNowPlugin.plugin
                 Scheme = "https",
                 Host = address,
                 Path = $"/api/now/table/sys_user/{user.SysId}",
-                Query = "sysparm_input_display_value=true" //to hide the new password in get api calls after api updates calls
+                Query = "sysparm_input_display_value=true" //in order to store the password properly encrypted in the database, below query parameter should be added in the request URL to set the password./ ENABLE PASSWORD MANAGEMENT ! VERY IMPORTANT ! / admin role required
             };
 
             var request = new HttpRequestMessage(HttpMethod.Put, uriBuilder.Uri)

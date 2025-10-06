@@ -50,12 +50,14 @@ namespace ServiceNowPlugin.plugin
         public static readonly int USERSEARCH_INVALID_RESPONSE = 1005;
         public static readonly int LOGON_ERROR = 1006;
         public static readonly int CHANGE_ERROR = 1007;
-        public static readonly int PRERECON_ERROR = 1008;
-        public static readonly int RECON_ERROR = 1009;
-        public static readonly int INVALID_JSON_RESPONSE = 1010;
-        public static readonly int INVALID_JSON_PARSE = 1011; // for parsing-specific failures
-        public static readonly int NETWORK_UNAVAILABLE = 1012;
-        public static readonly int INVALID_PARAMETER = 1013;
+        public static readonly int CHANGE_ERROR_PERM = 1008;
+        public static readonly int PRERECON_ERROR = 1009;
+        public static readonly int RECON_ERROR = 1010;
+        public static readonly int RECON_ERROR_PERM = 1011;
+        public static readonly int INVALID_JSON_RESPONSE = 1012;
+        public static readonly int INVALID_JSON_PARSE = 1013; // for parsing-specific failures
+        public static readonly int NETWORK_UNAVAILABLE = 1014;
+        public static readonly int INVALID_PARAMETER = 1015;
 
         public static readonly ReadOnlyDictionary<int, string> PluginErrorMessages =
             new ReadOnlyDictionary<int, string>(new Dictionary<int, string>()
@@ -69,8 +71,10 @@ namespace ServiceNowPlugin.plugin
                 [USERSEARCH_INVALID_RESPONSE] = "GET API returned no users or invalid response. Check logs for details.",
                 [LOGON_ERROR] = "Failed to verify credentials before change action, please refer to the logs for more information",
                 [CHANGE_ERROR] = "Failed to change the password, please refer to the logs for more information",
+                [CHANGE_ERROR_PERM] = "Failed to change the password| Insufficient permissions | Please refer to the logs for more information",
                 [PRERECON_ERROR] = "Failed to verify reconcile account credentials, please refer to the logs for more information",
                 [RECON_ERROR] = "Failed to reconcile the password, please refer to the logs for more information",
+                [RECON_ERROR_PERM] = "Failed to reconcile the password| Insufficient permissions | Please refer to the logs for more information",
                 [INVALID_JSON_RESPONSE] = "Unexpected JSON format in response. Check logs for details.",
                 [INVALID_JSON_PARSE] = "Error parsing JSON response. Check logs for details.",
                 [NETWORK_UNAVAILABLE] = "Network connectivity is unavailable. Check logs for details.",
