@@ -16,6 +16,7 @@ This is a CyberArk CPM API-based plugin for managing ServiceNow accounts passwor
 
 - **Verify:** Any user can perform these operations on their **own account** via the API.
 - **Change:** Only works for accounts with builtin role called **admin**. In case it is not applicable. Set reconcile account and **ChangePasswordInResetMode** parameter to = yes in the Additional Policy Settings.
+- [Role required: admin]([https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48](https://www.servicenow.com/docs/bundle/zurich-platform-security/page/integrate/authentication/task/reset-your-password.html))
 - **Reconcile:** Requires a **Reconcile account** with sufficient privileges to reset other users’ passwords with builtin role called **admin**.
 - There is not any security concers in case using admin privileges for reconcile account (to which end users dose not have access to).
 - In case there is a need to create dedicated role for that purpose Service Now admins should take a look on that:
